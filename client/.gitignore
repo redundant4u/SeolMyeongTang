@@ -1,0 +1,14 @@
+# Dependency directories
+node_modules
+package-lock.json
+yarn.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.next
+
+# Env
+.env*
+next-env.d.ts
