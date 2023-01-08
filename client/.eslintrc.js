@@ -11,6 +11,7 @@ module.exports = {
         'plugin:import/warnings',
         'plugin:prettier/recommended',
         'plugin:@typescript-eslint/recommended',
+        'plugin:import/typescript',
     ],
     rules: {
         'linebreak-style': 0,

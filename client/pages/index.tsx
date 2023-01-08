@@ -2,10 +2,12 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from '../styles/index.module.css';
+import Text from './text';
+import { getDatabase } from 'api/notion';
 
 export const databaseId = process.env.NOTION_DATABASE_ID ?? '';
 
-export default function Home({ posts }) {
+const Home = ({ posts }) => {
     return (
         <div>
             <Head>
@@ -42,7 +44,7 @@ export default function Home({ posts }) {
                 <h2 className={styles.heading}>All Posts</h2>
                 <ol className={styles.posts}>
                     {posts.map((post) => {
-                        const date = new Date(post.last_edited_time).toLocaleString('ko-KR', {
+                        const date = new Date(post.properties.Created_at.date.start).toLocaleString('ko-KR', {
                             month: 'short',
                             day: '2-digit',
                             year: 'numeric',
@@ -50,7 +52,9 @@ export default function Home({ posts }) {
                         return (
                             <li key={post.id} className={styles.post}>
                                 <h3 className={styles.postTitle}>
-                                    <Link href={`/${post.id}`}></Link>
+                                    <Link href={`/${post.id}`}>
+                                        <Text text={post.properties.Name.title} />
+                                    </Link>
                                 </h3>
                                 <p className={styles.postDescription}>{date}</p>
                                 <Link href={`/${post.id}`}>Read post →</Link>
@@ -61,12 +65,17 @@ export default function Home({ posts }) {
             </main>
         </div>
     );
-}
+};
 
 export const getStaticProps = async () => {
+    const database = await getDatabase();
+
     return {
         props: {
-            posts: [],
+            posts: database,
         },
+        revalidate: 1,
     };
 };
+
+export default Home;
