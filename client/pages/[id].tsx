@@ -1,27 +1,38 @@
-import { getBlocks, getBlock, getDatabase, getPage } from 'api/notion';
+import { getBlocks, getDatabase, getPage } from 'api/notion';
+import type { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Fragment } from 'react';
+import { BlockValue, Block, Page } from 'types/notion';
 import styles from '../styles/post.module.css';
 import Text from './text';
 
-const Post = ({ page, blocks }) => {
-    const renderNestedList = (block) => {
-        const { type } = block;
-        const value = block[type];
-        if (!value) return null;
+type PropTypes = {
+    page: Page | null;
+    blocks: Block[];
+};
 
-        const isNumberedList = value.children[0].type === 'numbered_list_item';
-
-        if (isNumberedList) {
-            return <ol>{value.children.map((block) => renderBlock(block))}</ol>;
+const Post = ({ page, blocks }: PropTypes) => {
+    const renderNestedList = (blocks: Block[] | null) => {
+        if (!blocks) {
+            return null;
         }
-        return <ul>{value.children.map((block) => renderBlock(block))}</ul>;
+
+        return blocks.map((block) => {
+            const { type } = block;
+            const value = block[type] as BlockValue;
+
+            const isNumberedList = value.type === 'numbered_list_item';
+            if (isNumberedList) {
+                return <ol>{renderBlock(block)}</ol>;
+            }
+            return <ul>{renderBlock(block)}</ul>;
+        });
     };
 
-    const renderBlock = (block) => {
-        const { type, id } = block;
-        const value = block[type];
+    const renderBlock = (block: Block) => {
+        const { type, id, has_children } = block;
+        const value = block[type] as BlockValue;
 
         switch (type) {
             case 'paragraph':
@@ -53,7 +64,7 @@ const Post = ({ page, blocks }) => {
                 return (
                     <li>
                         <Text text={value.rich_text} />
-                        {!!value.children && renderNestedList(block)}
+                        {has_children && renderNestedList(block.children)}
                     </li>
                 );
             case 'to_do':
@@ -79,7 +90,7 @@ const Post = ({ page, blocks }) => {
             case 'child_page':
                 return <p>{value.title}</p>;
             case 'image':
-                const src = value.type === 'external' ? value.external.url : value.file.url;
+                const src = (value.external?.url ?? value.file?.url) || 'ERROR';
                 const caption = value.caption ? value.caption[0]?.plain_text : '';
                 return (
                     <figure>
@@ -100,19 +111,20 @@ const Post = ({ page, blocks }) => {
                     </pre>
                 );
             case 'file':
-                const src_file = value.type === 'external' ? value.external.url : value.file.url;
-                const splitSourceArray = src_file.split('/');
+                const srcFile = (value.external?.url ?? value.file?.url) || 'ERROR';
+                const splitSourceArray = srcFile.split('/');
                 const lastElementInArray = splitSourceArray[splitSourceArray.length - 1];
-                const caption_file = value.caption ? value.caption[0]?.plain_text : '';
+                const captionFile = value.caption ? value.caption[0]?.plain_text : '';
+
                 return (
                     <figure>
                         <div className={styles.file}>
                             📎{' '}
-                            <Link href={src_file} passHref>
+                            <Link href={srcFile} passHref>
                                 {lastElementInArray.split('?')[0]}
                             </Link>
                         </div>
-                        {caption_file && <figcaption>{caption_file}</figcaption>}
+                        {captionFile && <figcaption>{captionFile}</figcaption>}
                     </figure>
                 );
             case 'bookmark':
@@ -130,6 +142,7 @@ const Post = ({ page, blocks }) => {
     if (!page || !blocks) {
         return <div />;
     }
+
     return (
         <div>
             <Head>
@@ -163,27 +176,28 @@ export const getStaticPaths = async () => {
     };
 };
 
-export const getStaticProps = async (context) => {
-    const { id } = context.params;
+export const getStaticProps: GetStaticProps = async (context) => {
+    const id = context.params?.id?.toString() || 'ERROR';
+
     const page = await getPage(id);
     const blocks = await getBlocks(id);
-
-    console.log(page);
-
     const childBlocks = await Promise.all(
         blocks
             .filter((block) => block.has_children)
             .map(async (block) => {
-                return await getBlock(block.id);
+                return {
+                    id: block.id,
+                    children: await getBlocks(block.id),
+                };
             })
     );
+
     const blocksWithChildren = blocks.map((block) => {
-        if (block.has_children && !block[block.type].children) {
-            const childBlock = childBlocks.find((e) => e.id === block.id);
-            if (childBlock) {
-                block.content = childBlock.content;
-            }
-        }
+        const childBlock = childBlocks
+            .filter((childBlock) => childBlock.id === block.id)
+            .map((childBlock) => childBlock.children)[0];
+
+        block.children = childBlock || null;
         return block;
     });
 

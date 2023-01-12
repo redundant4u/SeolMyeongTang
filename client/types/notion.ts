@@ -1,8 +1,4 @@
-export type GetPagesRequest = {
-    pageId: string;
-};
-
-export type GetDatabaseResponse = {
+export type Database = {
     results: [
         {
             id: string;
@@ -16,29 +12,65 @@ export type GetDatabaseResponse = {
     ];
 };
 
-export type GetPageResponse = {
-    // page: {
+export type Page = {
     properties: {
         Name: {
-            title: string;
+            title: [
+                {
+                    plain_text: string;
+                }
+            ];
         };
     };
-    // };
 };
 
-export type GetBlocksResponse = {
+export type Block = {
     id: string;
     has_children: boolean;
-    type: string;
-    content: BlockType | null;
+    type: BlockType;
+    parent: {
+        page_id?: string;
+        block_id?: string;
+    };
+    children: Block[] | null;
 };
 
-type BlockType = {
-    [key: string]: { rich_text: string } | null;
-    paragraph: {
-        rich_text: string;
-    };
-    bulleted_list_item: {
-        rich_text: string;
-    };
+export type BlockValue = {
+    children?: Block[];
+    rich_text: [
+        {
+            type: string;
+            annotation: [];
+            plain_text: string;
+            href: string;
+        }
+    ];
+    title?: string;
+    url?: string;
+    type?: string;
+    file?: { url: string };
+    external?: { url: string };
+    caption?: [
+        {
+            plain_text: string;
+        }
+    ];
+    checked?: boolean;
 };
+
+type BlockType =
+    | 'paragraph'
+    | 'heading_1'
+    | 'heading_2'
+    | 'heading_3'
+    | 'bulleted_list_item'
+    | 'numbered_list_item'
+    | 'to_do'
+    | 'toggle'
+    | 'child_page'
+    | 'image'
+    | 'divider'
+    | 'quote'
+    | 'code'
+    | 'file'
+    | 'bookmark';
