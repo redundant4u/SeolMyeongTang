@@ -20,7 +20,12 @@
 }
 
 .container figcaption {
-    opacity: 0.6;
+    opacity: 0.5;
+    font-size: 14px;
+}
+
+.container li {
+    margin-left: 24px;
 }
 
 .name {
