@@ -24,9 +24,9 @@ const Post = ({ page, blocks }: PropTypes) => {
 
             const isNumberedList = value.type === 'numbered_list_item';
             if (isNumberedList) {
-                return <ol>{renderBlock(block)}</ol>;
+                return <ol key={block.id}>{renderBlock(block)}</ol>;
             }
-            return <ul>{renderBlock(block)}</ul>;
+            return <ul key={block.id}>{renderBlock(block)}</ul>;
         });
     };
 
@@ -143,16 +143,17 @@ const Post = ({ page, blocks }: PropTypes) => {
         return <div />;
     }
 
+    const title = page.properties.Name.title[0].plain_text;
+
     return (
         <div>
             <Head>
-                <title>{page.properties.Name.title[0].plain_text}</title>
+                <title>{title}</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
             <article className={styles.container}>
                 <h1 className={styles.name}>
-                    <Text text={page.properties.Name.title} />
+                    <span>{title}</span>
                 </h1>
                 <section>
                     {blocks.map((block) => (

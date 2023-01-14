@@ -15,11 +15,7 @@ export type Database = {
 export type Page = {
     properties: {
         Name: {
-            title: [
-                {
-                    plain_text: string;
-                }
-            ];
+            title: [PlainText];
         };
     };
 };
@@ -37,25 +33,38 @@ export type Block = {
 
 export type BlockValue = {
     children?: Block[];
-    rich_text: [
-        {
-            type: string;
-            annotation: [];
-            plain_text: string;
-            href: string;
-        }
-    ];
+    rich_text: [RichText];
     title?: string;
     url?: string;
     type?: string;
     file?: { url: string };
     external?: { url: string };
-    caption?: [
-        {
-            plain_text: string;
-        }
-    ];
+    caption?: [PlainText];
     checked?: boolean;
+};
+
+export type RichText = {
+    type: string;
+    text: {
+        content: string;
+        link: {
+            url: string;
+        };
+    };
+    annotations: {
+        bold: boolean;
+        italic: boolean;
+        strikethrough: boolean;
+        underline: boolean;
+        code: boolean;
+        color: string;
+    };
+    plain_text: string;
+    href: string;
+};
+
+export type PlainText = {
+    plain_text: string;
 };
 
 type BlockType =
