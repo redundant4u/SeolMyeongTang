@@ -2,9 +2,14 @@ export type Database = {
     results: [
         {
             id: string;
-            properites: {
+            properties: {
+                Created_at: {
+                    date: {
+                        start: string;
+                    };
+                };
                 Name: {
-                    title: string;
+                    title: [RichText];
                 };
             };
             last_edited_time: string;
