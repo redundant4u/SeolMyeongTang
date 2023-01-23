@@ -1,0 +1,60 @@
+name: Deploy SeolMyeongTang Client
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deployment:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+    
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: Create Env File
+        run: |
+          touch .env
+          echo '${{ secrets.ENV }}' >> .env
+
+      - name: Install Dependencies
+        run: |
+          yarn set version berry
+          yarn
+
+      - name: Build
+        run: yarn build
+
+      - name: Compress
+        run: tar -zcf ${GITHUB_SHA::8}.tar.gz out
+
+      - name: Upload to S3
+        run: |
+          aws s3 mv --region ap-northeast-2 \
+          ${GITHUB_SHA::8}.tar.gz \
+          ${{ secrets.S3_CLIENT_LOCATION }}/${GITHUB_SHA::8}.tar.gz
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
+          envs: GITHUB_SHA
+          script: |
+            cd ~/SeolMyeongTang
+            ./deploy.sh ${GITHUB_SHA::8}

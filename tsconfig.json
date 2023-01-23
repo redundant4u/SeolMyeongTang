@@ -32,6 +32,6 @@
             "name": "typescript-plugin-css-modules"
         }
     ],
-    "exclude": ["node_modules"],
-    "include": ["next-env.d.ts", ".eslintrc.js", "**/*.ts", "**/*.tsx"]
+    "exclude": ["node_modules", "deployment"],
+    "include": ["next-env.d.ts", ".eslintrc.js", "**/*.ts", "**/*.tsx", "next.config.js"]
 }
