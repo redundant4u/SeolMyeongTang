@@ -8,6 +8,7 @@ yarn.lock
 
 # Optional REPL history
 .next
+out
 
 # Env
 .env*
