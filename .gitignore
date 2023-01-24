@@ -9,6 +9,7 @@ yarn.lock
 # Optional REPL history
 .next
 out
+deployment/build
 
 # Env
 .env*

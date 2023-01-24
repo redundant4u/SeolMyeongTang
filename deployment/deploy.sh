@@ -11,7 +11,7 @@ aws s3 cp s3://seolmyeongtang-cicd/client/$1.tar.gz $1.tar.gz
 rm -rf build/*
 
 ### Unzip Next Build
-tar -zxf $BUILD_PATH/$1.tar.gz -C $BUILD_PATH/build --strip 1
+tar -zxf $1.tar.gz -C build --strip 1
 
 ### Cleanup
-rm $CLIENT_PATH/$1.tar.gz
+rm $1.tar.gz
