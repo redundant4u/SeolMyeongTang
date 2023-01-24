@@ -9,10 +9,13 @@ import { Block, BlockValue } from 'types/notion';
 type PropTypes = {
     id: string;
     title: string;
+    blocks: Block[];
 };
 
-const PostPage = ({ id, title }: PropTypes) => {
-    const { data } = useQuery(['blocks', id], async () => getBlocks(id), {});
+const PostPage = ({ id, title, blocks }: PropTypes) => {
+    const { data } = useQuery(['blocks', id], async () => getBlocks(id), {
+        initialData: blocks,
+    });
 
     const renderBlock = (block: Block) => {
         const { type, id, has_children } = block;

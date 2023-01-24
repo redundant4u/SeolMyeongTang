@@ -1,26 +1,29 @@
-import { getDatabase, getPage } from 'api/notion';
+import { getBlocks, getDatabase, getPage } from 'api/notion';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import PostPage from 'components/Post/PostPage';
+import { Block } from 'types/notion';
 
 type PropTypes = {
     id: string;
     title: string;
+    blocks: Block[];
 };
 
-const Post = ({ id, title }: PropTypes) => {
+const Post = ({ id, title, blocks }: PropTypes) => {
     return (
         <>
-            <PostPage id={id} title={title} />
+            <PostPage id={id} title={title} blocks={blocks} />
         </>
     );
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const { results } = await getDatabase();
+    const paths = results.map((page) => ({ params: { id: page.id } }));
 
     return {
-        paths: results.map((page) => ({ params: { id: page.id } })),
-        fallback: true,
+        paths,
+        fallback: false,
     };
 };
 
@@ -34,10 +37,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
     }
 
     const page = await getPage(id);
+    const blocks = await getBlocks(id);
+
     const title = page.properties.Name.title[0].plain_text;
 
     return {
-        props: { id, title },
+        props: { id, title, blocks },
         revalidate: 1,
     };
 };

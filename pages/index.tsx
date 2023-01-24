@@ -1,12 +1,26 @@
-import MainLayer from 'components/MainLayer';
-import { NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
+import { MainLayer } from 'components';
+import { getDatabase } from 'api/notion';
+import { Database } from 'types/notion';
 
-const Home: NextPage = () => {
+type PropTypes = {
+    database: Database;
+};
+
+const Home: NextPage = ({ database }: PropTypes) => {
     return (
         <>
-            <MainLayer />
+            <MainLayer database={database} />
         </>
     );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+    const database = await getDatabase();
+
+    return {
+        props: { database },
+    };
 };
 
 export default Home;
