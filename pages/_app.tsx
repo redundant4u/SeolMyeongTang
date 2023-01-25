@@ -22,6 +22,8 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8" />
                 <meta name="description" content="설명탕 - SeolMyeongTang" />
+
+                <meta name="google-site-verification" content="-3v0hyjAm1rkvaDM7eWEfYTlnekJVSsTGDmTW2v3fCo" />
             </Head>
             <QueryClientProvider client={queryClient}>
                 <Component {...pageProps} />
