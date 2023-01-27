@@ -46,6 +46,9 @@ export type BlockValue = {
     external?: { url: string };
     caption?: [PlainText];
     checked?: boolean;
+    icon?: {
+        emoji: string;
+    };
 };
 
 export type RichText = {
@@ -87,4 +90,5 @@ type BlockType =
     | 'quote'
     | 'code'
     | 'file'
-    | 'bookmark';
+    | 'bookmark'
+    | 'callout';

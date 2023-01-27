@@ -117,9 +117,19 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
             case 'bookmark':
                 const href = value.url;
                 return (
-                    <a href={href} target="_brank" className={styles.bookmark}>
+                    <Link href={href ?? ''} target="_blank" className={styles.bookmark}>
                         {href}
-                    </a>
+                    </Link>
+                );
+            case 'callout':
+                return (
+                    <pre className={styles.pre}>
+                        <code className={styles.code_block}>
+                            {value.icon?.emoji} {value.rich_text[0].plain_text}
+                            <br />
+                            {renderNestedList(block.children)}
+                        </code>
+                    </pre>
                 );
             default:
                 return `❌ Unsupported block (${type === 'unsupported' ? 'unsupported by Notion API' : type})`;
