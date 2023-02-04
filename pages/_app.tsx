@@ -23,8 +23,8 @@ function MyApp({ Component, pageProps }: AppProps) {
                     name="description"
                     content="설명탕은 공유하고 싶은 컴퓨터 관련 글 또는 영상을 요약하여 전달하거나, 소개하고 싶은 저의 경험을 여러분들한테 전달합니다."
                 />
-                <meta name="keywords" content="SeolMyeongTang,설명탕,smt" />
-                <meta name="robots" content="index,nofollow" />
+                <meta name="keywords" content="SeolMyeongTang, 설명탕, smt" />
+                <meta name="robots" content="index, follow" />
 
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="SeolMyeongTang 설명탕" />
@@ -34,8 +34,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                 />
                 <meta property="og:image" content="https://redundant4u.com/logo.jpeg" />
                 <meta property="og:url" content="https://redundant4u.com" />
-
-                <meta name="google-site-verification" content="-3v0hyjAm1rkvaDM7eWEfYTlnekJVSsTGDmTW2v3fCo" />
 
                 <link rel="icon" href="/favicon.ico" />
                 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
