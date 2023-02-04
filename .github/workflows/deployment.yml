@@ -31,9 +31,7 @@ jobs:
           echo '${{ secrets.ENV }}' >> .env
 
       - name: Install Dependencies
-        run: |
-          yarn set version berry
-          yarn
+        run: yarn
 
       - name: Build
         run: yarn build
