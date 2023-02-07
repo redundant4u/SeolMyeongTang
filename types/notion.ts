@@ -49,6 +49,7 @@ export type BlockValue = {
     icon?: {
         emoji: string;
     };
+    language?: string;
 };
 
 export type RichText = {

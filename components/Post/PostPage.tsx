@@ -1,10 +1,16 @@
 import { getBlocks } from 'api/notion';
 import Link from 'next/link';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import Text from 'components/Text';
+
 import styles from 'styles/post.module.css';
+
+import Text from 'components/Text';
+
 import { Block, BlockValue } from 'types/notion';
+
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atomOneDarkReasonable } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 
 type PropTypes = {
     id: string;
@@ -13,6 +19,13 @@ type PropTypes = {
 };
 
 const PostPage = ({ id, title, blocks }: PropTypes) => {
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    useEffect(() => {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+            setIsDarkMode(event.matches);
+        });
+    }, []);
+
     const { data } = useQuery(['blocks', id], async () => getBlocks(id), {
         initialData: blocks,
     });
@@ -90,12 +103,17 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
             case 'quote':
                 return <blockquote key={id}>{value.rich_text[0].plain_text}</blockquote>;
             case 'code':
+                const code = value.rich_text[0].plain_text;
+
                 return (
-                    <pre className={styles.pre}>
-                        <code className={styles.code_block} key={id}>
-                            {value.rich_text[0].plain_text}
-                        </code>
-                    </pre>
+                    <SyntaxHighlighter
+                        className={styles.highlighter}
+                        customStyle={{ padding: 24 }}
+                        language={value.language}
+                        style={isDarkMode ? atomOneDarkReasonable : undefined}
+                    >
+                        {code}
+                    </SyntaxHighlighter>
                 );
             case 'file':
                 const srcFile = (value.external?.url ?? value.file?.url) || 'ERROR';
@@ -122,14 +140,20 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
                     </Link>
                 );
             case 'callout':
+                const title = `${value.icon?.emoji} ${value.rich_text[0].plain_text}`;
+                const children = block.children !== null ? renderNestedList(block.children) : '';
+                const text = `${title}\n${children}`;
+
                 return (
-                    <pre className={styles.pre}>
-                        <code className={styles.code_block}>
-                            {value.icon?.emoji} {value.rich_text[0].plain_text}
-                            <br />
-                            {renderNestedList(block.children)}
-                        </code>
-                    </pre>
+                    <SyntaxHighlighter
+                        className={styles.highlighter}
+                        customStyle={{ padding: 24 }}
+                        wrapLongLines={true}
+                        language="plaintext"
+                        style={isDarkMode ? atomOneDarkReasonable : undefined}
+                    >
+                        {text}
+                    </SyntaxHighlighter>
                 );
             default:
                 return `❌ Unsupported block (${type === 'unsupported' ? 'unsupported by Notion API' : type})`;
