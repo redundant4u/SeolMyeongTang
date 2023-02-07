@@ -37,14 +37,14 @@ export type Block = {
 };
 
 export type BlockValue = {
-    children?: Block[];
+    children: Block[];
     rich_text: [RichText];
     title?: string;
     url?: string;
     type?: string;
     file?: { url: string };
     external?: { url: string };
-    caption?: [PlainText];
+    caption: PlainText[];
     checked?: boolean;
     icon?: {
         emoji: string;
@@ -73,7 +73,8 @@ export type RichText = {
 };
 
 export type PlainText = {
-    plain_text: string;
+    plain_text?: string;
+    href?: string | null;
 };
 
 type BlockType =

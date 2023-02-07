@@ -90,14 +90,7 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
             case 'child_page':
                 return <p>{value.title}</p>;
             case 'image':
-                const src = (value.external?.url ?? value.file?.url) || 'ERROR';
-                const caption = value.caption ? value.caption[0]?.plain_text : '';
-                return (
-                    <figure>
-                        <img src={src} alt={caption} />
-                        {caption && <figcaption>{caption}</figcaption>}
-                    </figure>
-                );
+                return renderCaption(value);
             case 'divider':
                 return <hr key={id} />;
             case 'quote':
@@ -177,6 +170,24 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
         });
     };
 
+    const renderCaption = (value: BlockValue) => {
+        const src = (value.external?.url ?? value.file?.url) || 'ERROR';
+        const { caption } = value;
+
+        const alt = caption ? caption[0]?.plain_text : '';
+
+        return (
+            <figure>
+                <img src={src} alt={alt} />
+                <figcaption>
+                    {caption.map((caption) =>
+                        caption.href ? <Link href={caption.href}>{caption.plain_text}</Link> : caption.plain_text
+                    )}
+                </figcaption>
+            </figure>
+        );
+    };
+
     if (!data) {
         return <div />;
     }
@@ -192,7 +203,7 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
                         <Fragment key={block.id}>{renderBlock(block)}</Fragment>
                     ))}
                     <Link href="/" className={styles.back}>
-                        ← Go home
+                        ← 돌아가기
                     </Link>
                 </section>
             </article>
