@@ -63,20 +63,11 @@
     font-style: italic;
 }
 
-.pre {
-    background-color: rgb(242, 242, 242);
-    padding: 2px 4px;
-    margin: 20px 0;
-    line-height: 2.3;
+.highlighter {
+    margin: 24px 0 24px 0;
+    line-height: 2;
     border-radius: 12px;
     overflow: auto;
-}
-
-.code_block {
-    padding: 20px;
-    font-family: monospace;
-    display: flex;
-    flex-wrap: wrap;
 }
 
 .file {
