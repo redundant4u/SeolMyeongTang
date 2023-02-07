@@ -1,12 +1,13 @@
 .container {
     padding: 0 20px;
-    max-width: 700px;
+    max-width: 800px;
     margin: 0 auto;
     line-height: 1.5;
     text-align: justify;
 }
 
 .container h1 {
+    padding: 20px 0 20px 0;
     font-size: 32px;
 }
 
@@ -16,8 +17,9 @@
 }
 
 .container img {
-    width: 100%;
-    height: auto;
+    width: 80%;
+    display: block;
+    margin: auto auto 12px auto;
 }
 
 .container figure {
@@ -28,6 +30,7 @@
 .container figcaption {
     opacity: 0.5;
     font-size: 14px;
+    text-align: center;
 }
 
 .container li {
@@ -45,7 +48,7 @@
 
 .back {
     display: inline-block;
-    margin-bottom: 20px;
+    margin: 20px 0 20px 0;
 }
 
 .bold {

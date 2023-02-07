@@ -17,24 +17,30 @@ const MainPage = ({ database }: PropTypes) => {
     return (
         <>
             {data &&
-                data.results.map((post) => {
-                    const date = new Date(post.properties.Created_at.date.start).toLocaleString('ko-KR', {
-                        month: 'short',
-                        day: '2-digit',
-                        year: 'numeric',
-                    });
-                    return (
-                        <li key={post.id} className={styles.post}>
-                            <h3 className={styles.postTitle}>
-                                <Link href={`post/${post.id}`}>
-                                    <Text text={post.properties.Name.title} />
-                                </Link>
-                            </h3>
-                            <p className={styles.postDescription}>{date}</p>
-                            <Link href={`post/${post.id}`}>Read post →</Link>
-                        </li>
-                    );
-                })}
+                data.results
+                    .sort(
+                        (a, b) =>
+                            new Date(b.properties.Created_at.date.start).getTime() -
+                            new Date(a.properties.Created_at.date.start).getTime()
+                    )
+                    .map((post, i) => {
+                        const date = new Date(post.properties.Created_at.date.start).toLocaleString('ko-KR', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: '2-digit',
+                        });
+                        return (
+                            <li key={post.id} className={styles.post}>
+                                <h3 className={styles.postTitle}>
+                                    <Link href={`post/${post.id}`} as={`post/${i}`}>
+                                        <Text text={post.properties.Name.title} />
+                                    </Link>
+                                </h3>
+                                <p className={styles.postDescription}>{date}</p>
+                                <Link href={`post/${post.id}`}>더 보기 →</Link>
+                            </li>
+                        );
+                    })}
         </>
     );
 };
