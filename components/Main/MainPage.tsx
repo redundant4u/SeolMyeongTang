@@ -2,7 +2,6 @@ import { getDatabase } from 'api/notion';
 import Link from 'next/link';
 import { useQuery } from 'react-query';
 import Text from 'components/Text';
-import styles from 'styles/index.module.css';
 import { Database } from 'types/notion';
 
 type PropTypes = {
@@ -15,7 +14,7 @@ const MainPage = ({ database }: PropTypes) => {
     });
 
     return (
-        <ol className={styles.posts}>
+        <ol>
             {data &&
                 data.results
                     .sort(
@@ -30,13 +29,13 @@ const MainPage = ({ database }: PropTypes) => {
                             day: '2-digit',
                         });
                         return (
-                            <li key={post.id} className={styles.post}>
-                                <h3 className={styles.postTitle}>
-                                    <Link href={`post/${post.id}`}>
+                            <li key={post.id} className="mb-16">
+                                <h1 className="mb-2 text-2xl font-bold">
+                                    <Link href={`post/${post.id}`} className="text-inherit">
                                         <Text text={post.properties.Name.title} />
                                     </Link>
-                                </h3>
-                                <p className={styles.postDescription}>{date}</p>
+                                </h1>
+                                <p className="mb-2 opacity-60">{date}</p>
                                 <Link href={`post/${post.id}`}>더 보기 →</Link>
                             </li>
                         );

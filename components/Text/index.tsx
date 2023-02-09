@@ -1,5 +1,4 @@
 import { RichText } from 'types/notion';
-import styles from 'styles/post.module.css';
 
 type PropTypes = {
     text: [RichText];
@@ -16,11 +15,11 @@ const Text = ({ text }: PropTypes) => {
             <span
                 key={index}
                 className={[
-                    bold ? styles.bold : '',
-                    code ? styles.code : '',
-                    italic ? styles.italic : '',
-                    strikethrough ? styles.strikethrough : '',
-                    underline ? styles.underline : '',
+                    bold ? 'font-bold' : '',
+                    code ? 'p-1 rounded bg-[#f2f2f2] font-mono dark:bg-[#0f081c]' : '',
+                    italic ? 'italic' : '',
+                    strikethrough ? 'line-through' : '',
+                    underline ? 'underline' : '',
                 ].join(' ')}
                 style={color !== 'default' ? { color } : {}}
             >
