@@ -12,10 +12,7 @@ const MainLayer = ({ database }: PropTypes) => {
         <div>
             <main className={styles.container}>
                 <MainHeader />
-                <h2 className={styles.heading}>목록</h2>
-                <ol className={styles.posts}>
-                    <MainPage database={database} />
-                </ol>
+                <MainPage database={database} />
             </main>
         </div>
     );

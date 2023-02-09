@@ -15,7 +15,7 @@ const MainPage = ({ database }: PropTypes) => {
     });
 
     return (
-        <>
+        <ol className={styles.posts}>
             {data &&
                 data.results
                     .sort(
@@ -23,7 +23,7 @@ const MainPage = ({ database }: PropTypes) => {
                             new Date(b.properties.Created_at.date.start).getTime() -
                             new Date(a.properties.Created_at.date.start).getTime()
                     )
-                    .map((post, i) => {
+                    .map((post) => {
                         const date = new Date(post.properties.Created_at.date.start).toLocaleString('ko-KR', {
                             year: 'numeric',
                             month: 'short',
@@ -32,7 +32,7 @@ const MainPage = ({ database }: PropTypes) => {
                         return (
                             <li key={post.id} className={styles.post}>
                                 <h3 className={styles.postTitle}>
-                                    <Link href={`post/${post.id}`} as={`post/${i}`}>
+                                    <Link href={`post/${post.id}`}>
                                         <Text text={post.properties.Name.title} />
                                     </Link>
                                 </h3>
@@ -41,7 +41,7 @@ const MainPage = ({ database }: PropTypes) => {
                             </li>
                         );
                     })}
-        </>
+        </ol>
     );
 };
 

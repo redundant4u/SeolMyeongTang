@@ -34,6 +34,7 @@ const MainHeader = () => {
                 <br />
                 physiogel@pusan.ac.kr
             </p>
+            <h2 className={styles.heading}>목록</h2>
         </header>
     );
 };
