@@ -1,15 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from 'styles/index.module.css';
 
 const MainHeader = () => {
     return (
-        <header className={styles.header}>
-            <div className={styles.logos}>
+        <header className="leading-normal">
+            <div className="flex pt-12 pb-8">
                 <Image src="/logo.jpeg" alt="logo" width={160} height={160} />
             </div>
-            <h1>설명탕</h1>
-            <p>
+            <h1 className="font-extrabold text-4xl mb-8">설명탕</h1>
+            <p className="opacity-70">
                 안녕하세요 ‘<strong>설명탕</strong>’입니다.
                 <br />
                 <br />
@@ -23,8 +22,10 @@ const MainHeader = () => {
                 설명탕을 통해 미약하지만 자료를 얻고 도움이 되었으면 하는 바람입니다.
                 <br />
                 <br />
-                <Link href="https://redundant4u.notion.site/92de3eb204904963bf029e5c149b68ed">노션</Link>에서도 해당
-                내용을 볼 수 있습니다.
+                <Link href="https://redundant4u.notion.site/92de3eb204904963bf029e5c149b68ed" className="text-inherit">
+                    노션
+                </Link>
+                에서도 해당 내용을 볼 수 있습니다.
                 <br />
                 <br />
                 피드백은 언제든 환영입니다.
@@ -34,7 +35,7 @@ const MainHeader = () => {
                 <br />
                 physiogel@pusan.ac.kr
             </p>
-            <h2 className={styles.heading}>목록</h2>
+            <h2 className="mt-16 mb-4 pb-2 border-b opacity-60 font-bold dark:border-[#343539]">목록</h2>
         </header>
     );
 };

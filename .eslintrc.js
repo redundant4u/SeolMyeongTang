@@ -27,4 +27,5 @@ module.exports = {
         'react/jsx-props-no-spreading': 0,
         '@typescript-eslint/no-unused-vars': 1,
     },
+    ignorePatterns: ['.eslintrc.js', 'tailwind.config.js', 'next.config.js', 'postcss.config.js'],
 };

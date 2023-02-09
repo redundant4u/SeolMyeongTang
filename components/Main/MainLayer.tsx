@@ -1,4 +1,3 @@
-import styles from 'styles/index.module.css';
 import { Database } from 'types/notion';
 import MainHeader from './MainHeader';
 import MainPage from './MainPage';
@@ -9,12 +8,10 @@ type PropTypes = {
 
 const MainLayer = ({ database }: PropTypes) => {
     return (
-        <div>
-            <main className={styles.container}>
-                <MainHeader />
-                <MainPage database={database} />
-            </main>
-        </div>
+        <main className="pr-8 pl-8 max-w-[800px] mt-0 mr-auto mb-0 ml-auto">
+            <MainHeader />
+            <MainPage database={database} />
+        </main>
     );
 };
 

@@ -32,7 +32,7 @@ const MyDocument = () => {
                 <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png" />
                 <link rel="manifest" href="/manifest.json" />
             </Head>
-            <body>
+            <body className="dark:bg-[#18181f] dark:text-white">
                 <Main />
                 <NextScript />
             </body>

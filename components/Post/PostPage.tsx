@@ -3,8 +3,6 @@ import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
-import styles from 'styles/post.module.css';
-
 import Text from 'components/Text';
 
 import { Block, BlockValue } from 'types/notion';
@@ -37,13 +35,13 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
         switch (type) {
             case 'paragraph':
                 return (
-                    <p>
+                    <p className="indent-2 mt-8 mb-4">
                         <Text text={value.rich_text} />
                     </p>
                 );
             case 'heading_1':
                 return (
-                    <h1>
+                    <h1 className="pt-8 pb-8">
                         <Text text={value.rich_text} />
                     </h1>
                 );
@@ -62,7 +60,7 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
             case 'bulleted_list_item':
             case 'numbered_list_item':
                 return (
-                    <li>
+                    <li className="mt-2 ml-6">
                         <Text text={value.rich_text} />
                         {has_children && renderNestedList(block.children)}
                     </li>
@@ -100,8 +98,14 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
 
                 return (
                     <SyntaxHighlighter
-                        className={styles.highlighter}
-                        customStyle={{ padding: 24 }}
+                        customStyle={{
+                            padding: 24,
+                            marginTop: 24,
+                            marginBottom: 24,
+                            borderRadius: 12,
+                            lineHeight: 1.7,
+                            overflow: 'auto',
+                        }}
                         language={value.language}
                         style={isDarkMode ? atomOneDarkReasonable : undefined}
                     >
@@ -116,7 +120,7 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
 
                 return (
                     <figure>
-                        <div className={styles.file}>
+                        <div className="pt-2 pr-2 no-underline">
                             📎{' '}
                             <Link href={srcFile} passHref>
                                 {lastElementInArray.split('?')[0]}
@@ -128,9 +132,12 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
             case 'bookmark':
                 const href = value.url;
                 return (
-                    <Link href={href ?? ''} target="_blank" className={styles.bookmark}>
-                        {href}
-                    </Link>
+                    <>
+                        참고:
+                        <Link href={href ?? ''} target="_blank" className="">
+                            {href}
+                        </Link>
+                    </>
                 );
             case 'callout':
                 const title = `${value.icon?.emoji} ${value.rich_text[0].plain_text}`;
@@ -139,8 +146,14 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
 
                 return (
                     <SyntaxHighlighter
-                        className={styles.highlighter}
-                        customStyle={{ padding: 24 }}
+                        customStyle={{
+                            padding: 24,
+                            marginTop: 24,
+                            marginBottom: 24,
+                            borderRadius: 12,
+                            lineHeight: 1.7,
+                            overflow: 'auto',
+                        }}
                         wrapLongLines={true}
                         language="plaintext"
                         style={isDarkMode ? atomOneDarkReasonable : undefined}
@@ -166,7 +179,11 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
             if (isNumberedList) {
                 return <ol key={block.id}>{renderBlock(block)}</ol>;
             }
-            return <ul key={block.id}>{renderBlock(block)}</ul>;
+            return (
+                <ul key={block.id} className="pl-2">
+                    {renderBlock(block)}
+                </ul>
+            );
         });
     };
 
@@ -177,11 +194,17 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
         const alt = caption ? caption[0]?.plain_text : '';
 
         return (
-            <figure>
-                <img src={src} alt={alt} />
-                <figcaption>
-                    {caption.map((caption) =>
-                        caption.href ? <Link href={caption.href}>{caption.plain_text}</Link> : caption.plain_text
+            <figure className="mt-8 mr-0 mb-8 ml-0">
+                <img src={src} alt={alt} className="w-4/5 block mt-auto mr-auto mb-4 ml-auto" />
+                <figcaption className="opacity-50 text-center text-sm">
+                    {caption.map((caption, i) =>
+                        caption.href ? (
+                            <Link href={caption.href} key={i}>
+                                {caption.plain_text}
+                            </Link>
+                        ) : (
+                            caption.plain_text
+                        )
                     )}
                 </figcaption>
             </figure>
@@ -194,15 +217,15 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
 
     return (
         <div>
-            <article className={styles.container}>
-                <h1 className={styles.name}>
+            <article className="pt-12 pr-8 pl-8 mt-0 mr-auto mb-0 ml-auto max-w-[800px] text-justify">
+                <h1 className="text-3xl font-extrabold ">
                     <span>{title}</span>
                 </h1>
                 <section>
                     {data.map((block) => (
                         <Fragment key={block.id}>{renderBlock(block)}</Fragment>
                     ))}
-                    <Link href="/" className={styles.back}>
+                    <Link href="/" className="mt-8 mb-8 block">
                         ← 돌아가기
                     </Link>
                 </section>
