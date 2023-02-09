@@ -33,5 +33,5 @@
         }
     ],
     "exclude": ["node_modules", "deployment"],
-    "include": ["next-env.d.ts", ".eslintrc.js", "**/*.ts", "**/*.tsx", "next.config.js"]
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
