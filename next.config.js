@@ -1,8 +1,8 @@
 module.exports = {
     compiler: {
-        removeConsole: process.env.NODE_ENV === 'prod' ? true : false,
+        removeConsole: process.env.NODE_ENV === 'production' ? true : false,
     },
-    reactStrictMode: true,
+    reactStrictMode: false,
     swcMinify: true,
     images: {
         unoptimized: true,

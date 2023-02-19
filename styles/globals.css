@@ -7,3 +7,7 @@
         @apply text-blue-600;
     }
 }
+
+.xterm {
+    padding: 4px 16px 16px 11px;
+}
