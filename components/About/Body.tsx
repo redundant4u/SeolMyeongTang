@@ -1,17 +1,24 @@
 import { SocketContext } from 'contexts/socket';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
+import { isTablet, isDesktop } from 'react-device-detect';
 
 import 'xterm/css/xterm.css';
 
 const Body = () => {
     const socket = useContext(SocketContext);
 
-    const terminal = new Terminal({ cursorBlink: true, scrollSensitivity: 2 });
+    const terminal = new Terminal({
+        cursorBlink: true,
+        scrollSensitivity: 2,
+        rows: 36,
+        fontSize: isDesktop || isTablet ? 16 : 10,
+    });
     const fitAddon = new FitAddon();
 
-    const [input, setInput] = useState(0);
+    const DEFAULT_CURSOR_X = 3;
+    let input = 0;
 
     useEffect(() => {
         terminalInit();
@@ -42,7 +49,6 @@ const Body = () => {
     };
 
     const onKeyHandler = (e: { key: string; domEvent: KeyboardEvent }) => {
-        // const printable = !e.domEvent.altKey && !e.domEvent.ctrlKey && !e.domEvent.metaKey;
         const { key } = e.domEvent;
 
         switch (key) {
@@ -59,24 +65,23 @@ const Body = () => {
                 moveLeft();
                 break;
             default:
-                setInput(input + 1);
+                input += 1;
         }
     };
 
     const enter = () => {
-        setInput(0);
+        input = 0;
     };
 
     const backspace = () => {
-        if (terminal.buffer.active.cursorX >= 10) {
+        if (terminal.buffer.active.cursorX >= DEFAULT_CURSOR_X) {
             terminal.write('\x1B[0J');
-            setInput(input - 1);
+            input -= 1;
         }
     };
 
     const moveRight = () => {
-        const isEnd = terminal.buffer.active.cursorX - 10 <= input;
-        console.log(terminal.buffer.active.cursorX, input);
+        const isEnd = terminal.buffer.active.cursorX - DEFAULT_CURSOR_X <= input;
 
         if (!isEnd) {
             terminal.write('\x1B[C');
@@ -84,10 +89,9 @@ const Body = () => {
     };
 
     const moveLeft = () => {
-        const isStart = terminal.buffer.active.cursorX >= 10 + input;
-        console.log(terminal.buffer.active.cursorX, input);
+        const isStart = terminal.buffer.active.cursorX > DEFAULT_CURSOR_X + input;
 
-        if (!isStart) {
+        if (isStart) {
             terminal.write('\x1B[D');
         }
     };
