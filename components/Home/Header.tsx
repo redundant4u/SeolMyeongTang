@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-const MainHeader = () => {
+const Header = () => {
     return (
         <header className="leading-normal">
             <div className="flex pt-12 pb-8">
@@ -35,8 +35,19 @@ const MainHeader = () => {
                 <br />
                 physiogel@pusan.ac.kr
             </p>
-            <h2 className="mt-16 mb-4 pb-2 border-b opacity-60 font-bold dark:border-[#343539]">목록</h2>
+            <li className="flex mt-16 mb-4 pb-2 space-x-4 border-b dark:border-[#343539] font-bold">
+                <ul>
+                    <Link href="/">
+                        <h2 className="opacity-60">목록</h2>
+                    </Link>
+                </ul>
+                <ul>
+                    <Link href="/about">
+                        <h2 className="opacity-60">소개</h2>
+                    </Link>
+                </ul>
+            </li>
         </header>
     );
 };
-export default MainHeader;
+export default Header;

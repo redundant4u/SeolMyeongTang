@@ -1,16 +1,16 @@
 import { GetStaticProps, NextPage } from 'next';
-import { MainLayer } from 'components';
 import { getDatabase } from 'api/notion';
 import { Database } from 'types/notion';
+import { Home } from 'components';
 
 type PropTypes = {
     database: Database;
 };
 
-const Home: NextPage = ({ database }: PropTypes) => {
+const HomePage: NextPage = ({ database }: PropTypes) => {
     return (
         <>
-            <MainLayer database={database} />
+            <Home database={database} />
         </>
     );
 };
@@ -23,4 +23,4 @@ export const getStaticProps: GetStaticProps = async () => {
     };
 };
 
-export default Home;
+export default HomePage;

@@ -35,7 +35,7 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
         switch (type) {
             case 'paragraph':
                 return (
-                    <p className="indent-2 mt-8 mb-4">
+                    <p className="indent-2 mt-5 mb-4">
                         <Text text={value.rich_text} />
                     </p>
                 );

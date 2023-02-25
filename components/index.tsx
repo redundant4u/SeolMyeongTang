@@ -1,1 +1,1 @@
-export { default as MainLayer } from './Main/MainLayer';
+export { default as Home } from './Home';

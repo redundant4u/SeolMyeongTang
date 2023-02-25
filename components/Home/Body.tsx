@@ -8,7 +8,7 @@ type PropTypes = {
     database: Database;
 };
 
-const MainPage = ({ database }: PropTypes) => {
+const Body = ({ database }: PropTypes) => {
     const { data } = useQuery('notion', getDatabase, {
         initialData: database,
     });
@@ -44,4 +44,4 @@ const MainPage = ({ database }: PropTypes) => {
     );
 };
 
-export default MainPage;
+export default Body;
