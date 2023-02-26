@@ -1,7 +1,8 @@
 import { getBlocks, getDatabase, getPage } from 'api/notion';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import PostPage from 'components/Post/PostPage';
 import { Block } from 'types/notion';
+
+import PostPage from 'components/Post';
 
 type PropTypes = {
     id: string;
