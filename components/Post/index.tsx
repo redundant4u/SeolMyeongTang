@@ -4,6 +4,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
 import Text from 'components/Text';
+import CommonHeader from 'components/Common/Header';
 
 import { Block, BlockValue } from 'types/notion';
 
@@ -217,7 +218,8 @@ const PostPage = ({ id, title, blocks }: PropTypes) => {
 
     return (
         <div>
-            <article className="pt-12 pr-8 pl-8 mt-0 mr-auto mb-0 ml-auto max-w-[800px] text-justify">
+            <CommonHeader />
+            <article className="pt-12 pr-4 pl-4 mt-0 mr-auto mb-0 ml-auto max-w-[800px] text-justify">
                 <h1 className="text-3xl font-extrabold ">
                     <span>{title}</span>
                 </h1>

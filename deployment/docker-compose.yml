@@ -1,13 +1,22 @@
 version: "3.5"
 
 services:
-  server:
+  client:
     container_name: smt
     image: smt:prod
     ports:
       - 80:80
+      - 443:443
     volumes:
       - ./build:/home
     environment:
       - NODE_ENV=prod
     command: sh -c "nginx && tail -f /dev/null"
+
+  server:
+    container_name: smt-server
+    image: smt-server:prod
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=prod

@@ -2,6 +2,7 @@ import { SocketContext } from 'contexts/socket';
 import { useContext, useEffect } from 'react';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
+import { WebLinksAddon } from 'xterm-addon-web-links';
 import { isTablet, isDesktop } from 'react-device-detect';
 
 import 'xterm/css/xterm.css';
@@ -16,6 +17,7 @@ const Body = () => {
         fontSize: isDesktop || isTablet ? 16 : 10,
     });
     const fitAddon = new FitAddon();
+    const webLinksAddon = new WebLinksAddon();
 
     const DEFAULT_CURSOR_X = 3;
     let input = 0;
@@ -33,7 +35,9 @@ const Body = () => {
 
         terminal.onKey((e) => onKeyHandler(e));
         terminal.onData((e) => onDataHandler(e));
+
         terminal.loadAddon(fitAddon);
+        terminal.loadAddon(webLinksAddon);
 
         socket.emit('init');
 
