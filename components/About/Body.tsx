@@ -1,14 +1,19 @@
-import { SocketContext } from 'contexts/socket';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import { isTablet, isDesktop } from 'react-device-detect';
+import { io } from 'socket.io-client';
 
 import 'xterm/css/xterm.css';
 
 const Body = () => {
-    const socket = useContext(SocketContext);
+    const socket = io(
+        process.env.NODE_ENV === 'production' ? `${process.env.TERMINAL_SOCKET_URL}` : 'http://localhost:3000/terminal',
+        {
+            transports: ['websocket'],
+        }
+    );
 
     const terminal = new Terminal({
         cursorBlink: true,
@@ -26,7 +31,7 @@ const Body = () => {
         terminalInit();
 
         return () => {
-            socket.off('output', onOutputHandler);
+            socket.disconnect();
         };
     }, []);
 
