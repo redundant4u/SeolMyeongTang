@@ -26,7 +26,7 @@ const Body = () => {
         terminalInit();
 
         return () => {
-            socket.off('output');
+            socket.off('output', onOutputHandler);
         };
     }, []);
 
@@ -41,9 +41,7 @@ const Body = () => {
 
         socket.emit('init');
 
-        socket.on('output', (data) => {
-            terminal.write(data);
-        });
+        socket.on('output', onOutputHandler);
 
         fitAddon.fit();
     };
@@ -71,6 +69,10 @@ const Body = () => {
             default:
                 input += 1;
         }
+    };
+
+    const onOutputHandler = (data: string) => {
+        terminal.write(data);
     };
 
     const enter = () => {
