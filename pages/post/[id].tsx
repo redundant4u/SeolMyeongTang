@@ -3,6 +3,8 @@ import type { GetStaticPaths, GetStaticProps } from 'next';
 import { Block } from 'types/notion';
 
 import PostPage from 'components/Post';
+import Head from 'next/head';
+import { postIds } from 'consts/postIds';
 
 type PropTypes = {
     id: string;
@@ -13,6 +15,10 @@ type PropTypes = {
 const Post = ({ id, title, blocks }: PropTypes) => {
     return (
         <>
+            <Head>
+                <title>{title}</title>
+                <meta property="og:title" content={title} />
+            </Head>
             <PostPage id={id} title={title} blocks={blocks} />
         </>
     );
@@ -20,7 +26,7 @@ const Post = ({ id, title, blocks }: PropTypes) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const { results } = await getDatabase();
-    const paths = results.map((page) => ({ params: { id: page.id } }));
+    const paths = results.map((page) => ({ params: { id: postIds[page.id] } }));
 
     return {
         paths,
@@ -30,15 +36,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
     const id = context.params?.id;
+    const postId = Object.keys(postIds).find((key) => postIds[key] === id);
 
-    if (id?.length != 36 || Array.isArray(id)) {
+    if (!postId) {
         return {
             notFound: true,
         };
     }
 
-    const page = await getPage(id);
-    const blocks = await getBlocks(id);
+    const page = await getPage(postId);
+    const blocks = await getBlocks(postId);
 
     const title = page.properties.Name.title[0].plain_text;
 

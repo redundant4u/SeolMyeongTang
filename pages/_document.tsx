@@ -8,14 +8,18 @@ const MyDocument = () => {
 
                 <meta name="robots" content="index, follow" />
 
+                <meta name="author" content="redundant4u" />
+
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="SeolMyeongTang 설명탕" />
                 <meta
                     property="og:description"
                     content="설명탕은 공유하고 싶은 컴퓨터 관련 글 또는 영상을 요약하여 전달하거나, 소개하고 싶은 저의 경험을 여러분들한테 전달합니다."
                 />
-                <meta property="og:image" content="https://redundant4u.com/logo.jpeg" />
                 <meta property="og:url" content="https://redundant4u.com" />
+                <meta property="og:image" content="https://redundant4u.com/logo.jpeg" />
+                <meta property="og:image:width" content="160" />
+                <meta property="og:image:height" content="160" />
 
                 <link rel="icon" href="/favicon.ico" />
                 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />

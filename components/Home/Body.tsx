@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useQuery } from 'react-query';
 import Text from 'components/Text';
 import { Database } from 'types/notion';
+import { postIds } from 'consts/postIds';
 
 type PropTypes = {
     database: Database;
@@ -31,7 +32,11 @@ const Body = ({ database }: PropTypes) => {
                         return (
                             <li key={post.id} className="mb-16">
                                 <h1 className="mb-2 text-2xl font-bold">
-                                    <Link href={`post/${post.id}`} className="text-inherit">
+                                    <Link
+                                        href={`post/${post.id}`}
+                                        as={`post/${postIds[post.id]}`}
+                                        className="text-inherit"
+                                    >
                                         <Text text={post.properties.Name.title} />
                                     </Link>
                                 </h1>
