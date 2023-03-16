@@ -41,7 +41,9 @@ const Body = ({ database }: PropTypes) => {
                                     </Link>
                                 </h1>
                                 <p className="mb-2 opacity-60">{date}</p>
-                                <Link href={`post/${post.id}`}>더 보기 →</Link>
+                                <Link href={`post/${post.id}`} as={`post/${postIds[post.id]}`}>
+                                    더 보기 →
+                                </Link>
                             </li>
                         );
                     })}
