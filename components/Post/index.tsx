@@ -12,22 +12,23 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDarkReasonable } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 
 type PropTypes = {
-    id: string;
+    pageId: string;
     title: string;
     blocks: Block[];
 };
 
-const PostPage = ({ id, title, blocks }: PropTypes) => {
+const PostPage = ({ pageId, title, blocks }: PropTypes) => {
     const [isDarkMode, setIsDarkMode] = useState(false);
+
+    const { data } = useQuery(['blocks', pageId], async () => getBlocks(pageId), {
+        initialData: blocks,
+    });
+
     useEffect(() => {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
             setIsDarkMode(event.matches);
         });
     }, []);
-
-    const { data } = useQuery(['blocks', id], async () => getBlocks(id), {
-        initialData: blocks,
-    });
 
     const renderBlock = (block: Block) => {
         const { type, id, has_children } = block;

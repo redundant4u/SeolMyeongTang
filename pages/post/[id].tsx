@@ -7,19 +7,19 @@ import Head from 'next/head';
 import { postIds } from 'consts/postIds';
 
 type PropTypes = {
-    id: string;
+    pageId: string;
     title: string;
     blocks: Block[];
 };
 
-const Post = ({ id, title, blocks }: PropTypes) => {
+const Post = ({ pageId, title, blocks }: PropTypes) => {
     return (
         <>
             <Head>
                 <title>{title}</title>
                 <meta property="og:title" content={title} />
             </Head>
-            <PostPage id={id} title={title} blocks={blocks} />
+            <PostPage pageId={pageId} title={title} blocks={blocks} />
         </>
     );
 };
@@ -36,21 +36,28 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
     const id = context.params?.id;
-    const postId = Object.keys(postIds).find((key) => postIds[key] === id);
 
-    if (!postId) {
+    if (!id || Array.isArray(id)) {
         return {
             notFound: true,
         };
     }
 
-    const page = await getPage(postId);
-    const blocks = await getBlocks(postId);
+    const pageId = Object.keys(postIds).find((key) => postIds[key] === id);
+
+    if (!pageId) {
+        return {
+            notFound: true,
+        };
+    }
+
+    const page = await getPage(pageId);
+    const blocks = await getBlocks(pageId);
 
     const title = page.properties.Name.title[0].plain_text;
 
     return {
-        props: { id, title, blocks },
+        props: { pageId, title, blocks },
         revalidate: 1,
     };
 };
