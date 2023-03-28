@@ -1,8 +1,8 @@
 name: Deploy SeolMyeongTang Client
 
 on:
-  push:
-    branches: [main]
+  release:
+    types: [published]
 
 jobs:
   deployment:
@@ -54,5 +54,5 @@ jobs:
           key: ${{ secrets.KEY }}
           envs: GITHUB_SHA
           script: |
-            cd ~/SeolMyeongTang
-            ./deploy.sh ${GITHUB_SHA::8}
+            cd ~/SeolMyeongTang-Infrastructure/deployment
+            ./deploy_client.sh ${GITHUB_SHA::8}
