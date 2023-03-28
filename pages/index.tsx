@@ -1,22 +1,23 @@
 import { GetStaticProps, NextPage } from 'next';
-import { getDatabase } from 'api/notion';
-import { Database } from 'types/notion';
+
 import { Home } from 'components';
+import { getPosts } from 'api/post';
+import { Posts } from 'types/post';
 
 type PropTypes = {
-    database: Database;
+    posts: Posts;
 };
 
-const HomePage: NextPage = ({ database }: PropTypes) => {
+const HomePage: NextPage = ({ posts }: PropTypes) => {
     return (
         <>
-            <Home database={database} />
+            <Home posts={posts} />
         </>
     );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-    const database = await getDatabase();
+    const database = await getPosts();
 
     return {
         props: { database },

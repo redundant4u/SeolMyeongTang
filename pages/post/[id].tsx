@@ -1,32 +1,32 @@
-import { getBlocks, getDatabase, getPage } from 'api/notion';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import { Block } from 'types/notion';
+import Head from 'next/head';
 
 import PostPage from 'components/Post';
-import Head from 'next/head';
-import { postIds } from 'consts/postIds';
+import { getPost, getPosts } from 'api/post';
+import { Post } from 'types/post';
 
 type PropTypes = {
-    pageId: string;
-    title: string;
-    blocks: Block[];
+    postId: string;
+    post: Post;
 };
 
-const Post = ({ pageId, title, blocks }: PropTypes) => {
+const Post = ({ postId, post }: PropTypes) => {
+    const { title } = post;
+
     return (
         <>
             <Head>
                 <title>{title}</title>
                 <meta property="og:title" content={title} />
             </Head>
-            <PostPage pageId={pageId} title={title} blocks={blocks} />
+            <PostPage postId={postId} post={post} />
         </>
     );
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const { results } = await getDatabase();
-    const paths = results.map((page) => ({ params: { id: postIds[page.id] } }));
+    const { posts } = await getPosts();
+    const paths = posts.map((post) => ({ params: { id: post.link } }));
 
     return {
         paths,
@@ -35,29 +35,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const id = context.params?.id;
+    const postId = context.params?.id;
 
-    if (!id || Array.isArray(id)) {
+    if (!postId || Array.isArray(postId)) {
         return {
             notFound: true,
         };
     }
 
-    const pageId = Object.keys(postIds).find((key) => postIds[key] === id);
-
-    if (!pageId) {
-        return {
-            notFound: true,
-        };
-    }
-
-    const page = await getPage(pageId);
-    const blocks = await getBlocks(pageId);
-
-    const title = page.properties.Name.title[0].plain_text;
+    const post = await getPost(postId);
 
     return {
-        props: { pageId, title, blocks },
+        props: { postId, post },
         revalidate: 1,
     };
 };

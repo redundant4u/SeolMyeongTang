@@ -1,16 +1,17 @@
-import { Database } from 'types/notion';
 import Header from './Header';
 import Body from './Body';
 
+import { Posts } from 'types/post';
+
 type PropTypes = {
-    database: Database;
+    posts: Posts;
 };
 
-const Home = ({ database }: PropTypes) => {
+const Home = ({ posts }: PropTypes) => {
     return (
         <main className="pr-8 pl-8 max-w-[800px] mt-0 mr-auto mb-0 ml-auto">
             <Header />
-            <Body database={database} />
+            <Body posts={posts} />
         </main>
     );
 };
