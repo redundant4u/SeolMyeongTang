@@ -11,7 +11,6 @@ const MyDocument = () => {
                 <meta name="author" content="redundant4u" />
 
                 <meta property="og:type" content="website" />
-                <meta property="og:title" content="SeolMyeongTang 설명탕" />
                 <meta
                     property="og:description"
                     content="설명탕은 공유하고 싶은 컴퓨터 관련 글 또는 영상을 요약하여 전달하거나, 소개하고 싶은 저의 경험을 여러분들한테 전달합니다."
