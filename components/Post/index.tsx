@@ -1,14 +1,13 @@
 import Link from 'next/link';
 import rehypeRaw from 'rehype-raw';
-import SyntaxHighlighter from 'react-syntax-highlighter/dist/cjs/default-highlight';
 import { useQuery } from 'react-query';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
-import { atomOneDarkReasonable } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
-import { useEffect, useState } from 'react';
+import remarkGfm from 'remark-gfm';
 
 import CommonHeader from 'components/Common/Header';
 import { Post } from 'types/post';
 import { getPost } from 'api/post';
+import Code from 'components/Code';
 
 type PropTypes = {
     postId: string;
@@ -19,15 +18,6 @@ const PostPage = ({ postId, post }: PropTypes) => {
     const { data } = useQuery(['post', post], async () => getPost(postId), {
         initialData: post,
     });
-    const [isDarkMode, setIsDarkMode] = useState(false);
-
-    useEffect(() => {
-        setIsDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-            setIsDarkMode(event.matches);
-        });
-    }, []);
 
     if (!data) {
         return <div />;
@@ -45,6 +35,7 @@ const PostPage = ({ postId, post }: PropTypes) => {
                         className="prose dark:prose-invert max-w-[800px]"
                         children={data.content}
                         rehypePlugins={[rehypeRaw]}
+                        remarkPlugins={[remarkGfm]}
                         components={{
                             code({ children, className, inline }) {
                                 return inline ? (
@@ -52,19 +43,7 @@ const PostPage = ({ postId, post }: PropTypes) => {
                                         {children}
                                     </code>
                                 ) : (
-                                    <SyntaxHighlighter
-                                        style={isDarkMode ? atomOneDarkReasonable : undefined}
-                                        children={children[0]?.toString() || ''}
-                                        language={className || 'text'}
-                                        customStyle={{
-                                            padding: 24,
-                                            marginTop: 24,
-                                            marginBottom: 24,
-                                            borderRadius: 12,
-                                            lineHeight: 1.7,
-                                            overflow: 'auto',
-                                        }}
-                                    />
+                                    <Code code={children[0]?.toString()} language={className} />
                                 );
                             },
                         }}
