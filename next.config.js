@@ -7,7 +7,6 @@ module.exports = {
     images: {
         unoptimized: true,
     },
-    trailingSlash: true,
     env: {
         TERMINAL_SOCKET_URL: process.env.TERMINAL_SOCKET_URL,
     },
