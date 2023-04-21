@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v3
     
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -42,17 +42,17 @@ jobs:
       - name: Upload to S3
         run: |
           aws s3 mv --region ap-northeast-2 \
-          ${GITHUB_SHA::8}.tar.gz \
-          ${{ secrets.S3_CLIENT_LOCATION }}/${GITHUB_SHA::8}.tar.gz
+            ${GITHUB_SHA::8}.tar.gz \
+            ${{ secrets.S3_CLIENT_LOCATION }}/${GITHUB_SHA::8}.tar.gz
 
       - name: Deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          port: ${{ secrets.PORT }}
-          key: ${{ secrets.KEY }}
-          envs: GITHUB_SHA
-          script: |
-            cd ~/SeolMyeongTang-Infrastructure/deployment
-            ./deploy_client.sh ${GITHUB_SHA::8}
+        run: |
+          aws s3 sync \
+            out \
+            ${{ secrets.S3_CLIENT_DEPLOYMENT }} --delete
+
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation \
+          --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} \
+          --paths "/*"
