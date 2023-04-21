@@ -1,10 +1,6 @@
-export type Posts = {
-    posts: Post[];
-};
-
 export type Post = {
-    title: string;
-    content: string;
-    link: string;
-    createdAt: string;
+    Title: string;
+    Content: string;
+    SK: string;
+    CreatedAt: string;
 };

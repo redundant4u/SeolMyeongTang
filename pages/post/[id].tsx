@@ -11,7 +11,7 @@ type PropTypes = {
 };
 
 const Post = ({ postId, post }: PropTypes) => {
-    const { title } = post;
+    const { Title: title } = post;
 
     return (
         <>
@@ -25,8 +25,8 @@ const Post = ({ postId, post }: PropTypes) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const { posts } = await getPosts();
-    const paths = posts.map((post) => ({ params: { id: post.link } }));
+    const posts = await getPosts();
+    const paths = posts.map((post) => ({ params: { id: post.SK } }));
 
     return {
         paths,

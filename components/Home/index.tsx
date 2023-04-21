@@ -1,11 +1,11 @@
 import Header from './Header';
 import Body from './Body';
 
-import { Posts } from 'types/post';
 import Head from 'next/head';
+import { Post } from 'types/post';
 
 type PropTypes = {
-    posts: Posts;
+    posts: Post[];
 };
 
 const Home = ({ posts }: PropTypes) => {

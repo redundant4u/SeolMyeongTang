@@ -28,12 +28,12 @@ const PostPage = ({ postId, post }: PropTypes) => {
             <CommonHeader />
             <article className="pt-8 pr-4 pl-4 mt-0 mb-0 mr-auto ml-auto text-justify max-w-[800px]">
                 <h1 className="text-3xl font-extrabold pb-16">
-                    <span>{data.title}</span>
+                    <span>{data.Title}</span>
                 </h1>
                 <section>
                     <ReactMarkdown
                         className="prose dark:prose-invert max-w-[800px]"
-                        children={data.content}
+                        children={data.Content}
                         rehypePlugins={[rehypeRaw]}
                         remarkPlugins={[remarkGfm]}
                         components={{

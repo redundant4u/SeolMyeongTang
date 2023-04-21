@@ -11,7 +11,7 @@ const HTTP_METHOD = {
 
 const axiosInstance: AxiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_ENDPOINT,
-    timeout: 10000,
+    timeout: 3000,
 });
 
 const handleResponse = <T>(response: AxiosResponse<T>) => {

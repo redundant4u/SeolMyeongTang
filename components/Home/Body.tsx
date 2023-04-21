@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { useQuery } from 'react-query';
 
-import { Posts } from 'types/post';
 import { getPosts } from 'api/post';
+import { Post } from 'types/post';
 
 type PropTypes = {
-    posts: Posts;
+    posts: Post[];
 };
 
 const Body = ({ posts }: PropTypes) => {
@@ -16,10 +16,10 @@ const Body = ({ posts }: PropTypes) => {
     return (
         <ol>
             {data &&
-                data.posts
-                    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                data
+                    .sort((a, b) => new Date(b.CreatedAt).getTime() - new Date(a.CreatedAt).getTime())
                     .map((post, id) => {
-                        const date = new Date(post.createdAt).toLocaleString('ko-KR', {
+                        const date = new Date(post.CreatedAt).toLocaleString('ko-KR', {
                             year: 'numeric',
                             month: 'short',
                             day: '2-digit',
@@ -27,12 +27,12 @@ const Body = ({ posts }: PropTypes) => {
                         return (
                             <li key={id} className="mb-16">
                                 <h1 className="mb-2 text-2xl font-bold">
-                                    <Link href={`post/${post.link}`} className="text-inherit">
-                                        <p>{post.title}</p>
+                                    <Link href={`post/${post.SK}`} className="text-inherit">
+                                        <p>{post.Title}</p>
                                     </Link>
                                 </h1>
                                 <p className="mb-2 opacity-60">{date}</p>
-                                <Link href={`post/${post.link}`}>더 보기 →</Link>
+                                <Link href={`post/${post.SK}`}>더 보기 →</Link>
                             </li>
                         );
                     })}
