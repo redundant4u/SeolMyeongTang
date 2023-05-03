@@ -2,6 +2,7 @@ module.exports = {
     compiler: {
         removeConsole: process.env.NODE_ENV === 'production' ? true : false,
     },
+    trailingSlash: false,
     reactStrictMode: false,
     swcMinify: true,
     images: {
