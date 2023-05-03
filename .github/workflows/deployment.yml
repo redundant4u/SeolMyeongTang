@@ -39,17 +39,27 @@ jobs:
       - name: Compress
         run: tar -zcf ${GITHUB_SHA::8}.tar.gz out
 
+      - name: Delete html extension
+        run: |
+          for file in $(find ./out -name "*.html"); do mv "$file" "${file%%.html}"; done
+          mv out/index out/index.html
+
       - name: Upload to S3
         run: |
           aws s3 mv --region ap-northeast-2 \
             ${GITHUB_SHA::8}.tar.gz \
             ${{ secrets.S3_CLIENT_LOCATION }}/${GITHUB_SHA::8}.tar.gz
 
-      - name: Deploy
+      - name: Sync S3
         run: |
-          aws s3 sync \
-            out \
-            ${{ secrets.S3_CLIENT_DEPLOYMENT }} --delete
+          aws s3 sync out ${{ secrets.S3_CLIENT_DEPLOYMENT }} \
+            --exclude "*.*" \
+            --content-type "text/html" \
+            --delete
+          aws s3 sync out ${{ secrets.S3_CLIENT_DEPLOYMENT }} \
+          --exclude "*" \
+          --include "*.png" --include "*.jpeg" --include "*.json" --include "*.js" --include "*.css" --include "*.ico" --include "*.html" \
+          --delete
 
       - name: Invalidate CloudFront Cache
         run: |
