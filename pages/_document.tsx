@@ -6,6 +6,8 @@ const MyDocument = () => {
             <Head>
                 <meta charSet="utf-8" />
 
+                <meta name="google-site-verification" content="-3v0hyjAm1rkvaDM7eWEfYTlnekJVSsTGDmTW2v3fCo" />
+
                 <meta name="robots" content="index, follow" />
 
                 <meta name="author" content="redundant4u" />
