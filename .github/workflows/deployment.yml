@@ -36,13 +36,13 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Compress
-        run: tar -zcf ${GITHUB_SHA::8}.tar.gz out
-
       - name: Delete html extension
         run: |
           for file in $(find ./out -name "*.html"); do mv "$file" "${file%%.html}"; done
           mv out/index out/index.html
+
+      - name: Compress
+        run: tar -zcf ${GITHUB_SHA::8}.tar.gz out
 
       - name: Upload to S3
         run: |
