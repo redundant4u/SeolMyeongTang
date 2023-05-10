@@ -12,13 +12,16 @@ type PropTypes = {
 
 const Post = ({ postId, post }: PropTypes) => {
     const { Title: title } = post;
-    const titleTag = `설명탕 | ${title}`;
+
+    const titleConent = `설명탕 | ${title}`;
+    const urlContent = `https://redundant4u.com/post/${postId}`;
 
     return (
         <>
             <Head>
-                <title>{titleTag}</title>
-                <meta property="og:title" content={titleTag} />
+                <title>{titleConent}</title>
+                <meta property="og:title" content={titleConent} />
+                <meta property="og:url" content={urlContent} />
             </Head>
             <PostPage postId={postId} post={post} />
         </>

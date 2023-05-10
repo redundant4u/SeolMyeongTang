@@ -14,6 +14,7 @@ const Home = ({ posts }: PropTypes) => {
             <Head>
                 <title>SeolMyeongTang 설명탕</title>
                 <meta property="og:title" content="SeolMyeongTang 설명탕" />
+                <meta property="og:url" content="https://redundant4u.com" />
             </Head>
             <main className="pr-8 pl-8 max-w-[800px] mt-0 mr-auto mb-0 ml-auto">
                 <Header />
