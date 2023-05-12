@@ -13,7 +13,7 @@ type PropTypes = {
 const Post = ({ postId, post }: PropTypes) => {
     const { Title: title } = post;
 
-    const titleConent = `설명탕 | ${title}`;
+    const titleConent = `${title} | 설명탕`;
     const urlContent = `https://redundant4u.com/post/${postId}`;
 
     return (

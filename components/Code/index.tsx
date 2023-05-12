@@ -25,7 +25,7 @@ const Code = ({ code, language }) => {
         <div className="relative">
             <div className="absolute mt-6 right-6 flex space-x-4">
                 {isClick && <span className="text-sm text-slate-500">복사 완료</span>}
-                <img className="mt-0" width={24} src="/icons/copy.png" onClick={onClick} />
+                <img className="mt-0" width={24} src="/icons/copy.png" alt="copy" onClick={onClick} />
             </div>
             <SyntaxHighlighter
                 style={isDarkMode ? atomOneDarkReasonable : undefined}
