@@ -1,6 +1,6 @@
 # SeolMyeongTang
 
-<img src="https://redundant4u.com/logo.jpeg" width="100" alt="seolmyeongtang" />
+<img src="https://redundant4u.com/logo.jpeg" width="160" alt="seolmyeongtang" />
 
 Notion API를 활용한 개인 블로그 프로젝트 '설명탕'입니다
 
