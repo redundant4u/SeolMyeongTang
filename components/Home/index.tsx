@@ -2,6 +2,8 @@ import Header from './Header';
 import Body from './Body';
 
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { Post } from 'types/post';
 
 type PropTypes = {
@@ -9,6 +11,31 @@ type PropTypes = {
 };
 
 const Home = ({ posts }: PropTypes) => {
+    const router = useRouter();
+
+    useEffect(() => {
+        if ('scrollRestoration' in history && history.scrollRestoration !== 'manual') {
+            history.scrollRestoration = 'manual';
+        }
+    }, []);
+
+    useEffect(() => {
+        const handleRouteChange = () => {
+            sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+        };
+        router.events.on('routeChangeStart', handleRouteChange);
+        return () => {
+            router.events.off('routeChangeStart', handleRouteChange);
+        };
+    }, [router.events]);
+
+    useEffect(() => {
+        if ('scrollPosition' in sessionStorage) {
+            window.scrollTo(0, Number(sessionStorage.getItem('scrollPosition')));
+            sessionStorage.removeItem('scrollPosition');
+        }
+    }, []);
+
     return (
         <>
             <Head>

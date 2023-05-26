@@ -32,7 +32,6 @@ const Body = ({ posts }: PropTypes) => {
                                     </Link>
                                 </h1>
                                 <p className="mb-2 opacity-60">{date}</p>
-                                <Link href={`post/${post.SK}`}>더 보기 →</Link>
                             </li>
                         );
                     })}
