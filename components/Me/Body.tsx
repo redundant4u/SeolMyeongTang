@@ -18,7 +18,7 @@ const Body = () => {
     const terminal = new Terminal({
         cursorBlink: true,
         scrollSensitivity: 2,
-        rows: 36,
+        rows: isDesktop ? 60 : 40,
         fontSize: isDesktop || isTablet ? 16 : 10,
     });
     const fitAddon = new FitAddon();

@@ -1,7 +1,7 @@
 import Body from './Body';
 import Header from './Header';
 
-const About = () => {
+const Me = () => {
     return (
         <>
             <Header />
@@ -9,4 +9,4 @@ const About = () => {
         </>
     );
 };
-export default About;
+export default Me;
