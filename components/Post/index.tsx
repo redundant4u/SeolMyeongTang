@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import rehypeRaw from 'rehype-raw';
 import { useQuery } from 'react-query';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
@@ -10,26 +9,35 @@ import { getPost } from 'api/post';
 import Code from 'components/Code';
 
 type PropTypes = {
-    postId: string;
     post: Post;
 };
 
-const PostPage = ({ postId, post }: PropTypes) => {
+const PostPage = ({ post }: PropTypes) => {
     const { data } = useQuery(['post', post], async () => getPost(postId), {
         initialData: post,
     });
+    const postId = data.SK;
 
     if (!data) {
         return <div />;
     }
 
+    const date = new Date(post.CreatedAt).toLocaleString('ko-KR', {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit',
+    });
+
     return (
         <div>
             <CommonHeader />
-            <article className="pt-8 pr-4 pl-4 mt-0 mb-0 mr-auto ml-auto text-justify max-w-[800px]">
-                <h1 className="text-3xl font-extrabold pb-16">
-                    <span>{data.Title}</span>
-                </h1>
+            <article className="pt-8 pr-4 pl-4 mt-0 mb-16 mr-auto ml-auto text-justify max-w-[800px]">
+                <div className="pb-12">
+                    <h1 className="text-3xl font-extrabold pb-3">
+                        <span>{data.Title}</span>
+                    </h1>
+                    <span className="opacity-60">{date}</span>
+                </div>
                 <section>
                     <ReactMarkdown
                         className="prose dark:prose-invert max-w-[800px]"
@@ -38,19 +46,26 @@ const PostPage = ({ postId, post }: PropTypes) => {
                         remarkPlugins={[remarkGfm]}
                         components={{
                             code({ children, className, inline }) {
+                                const code = children[0]?.toString();
+                                const language = className ? className.replace('language-', '') : 'TEXT';
+
                                 return inline ? (
                                     <code className="p-1 rounded bg-[#f2f2f2] font-mono dark:bg-[#0f081c]">
                                         {children}
                                     </code>
                                 ) : (
-                                    <Code code={children[0]?.toString()} language={className} />
+                                    <Code code={code || ''} language={language} />
+                                );
+                            },
+                            table({ children }) {
+                                return (
+                                    <div className="overflow-x-auto whitespace-pre">
+                                        <table>{children}</table>
+                                    </div>
                                 );
                             },
                         }}
                     />
-                    <Link href="/" className="mt-12 mb-12 block">
-                        ← 돌아가기
-                    </Link>
                 </section>
             </article>
         </div>

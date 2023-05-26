@@ -6,12 +6,12 @@ import { getPost, getPosts } from 'api/post';
 import { Post } from 'types/post';
 
 type PropTypes = {
-    postId: string;
     post: Post;
 };
 
-const Post = ({ postId, post }: PropTypes) => {
+const Post = ({ post }: PropTypes) => {
     const { Title: title } = post;
+    const postId = post.SK;
 
     const titleConent = `${title} | 설명탕`;
     const urlContent = `https://redundant4u.com/post/${postId}`;
@@ -23,7 +23,7 @@ const Post = ({ postId, post }: PropTypes) => {
                 <meta property="og:title" content={titleConent} />
                 <meta property="og:url" content={urlContent} />
             </Head>
-            <PostPage postId={postId} post={post} />
+            <PostPage post={post} />
         </>
     );
 };
@@ -50,7 +50,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const post = await getPost(postId);
 
     return {
-        props: { postId, post },
+        props: { post },
         revalidate: 1,
     };
 };
