@@ -1,5 +1,6 @@
 import Header from './Header';
 import Body from './Body';
+import CommonFooter from 'components/Common/Footer';
 
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -47,6 +48,7 @@ const Home = ({ posts }: PropTypes) => {
                 <Header />
                 <Body posts={posts} />
             </main>
+            <CommonFooter />
         </>
     );
 };

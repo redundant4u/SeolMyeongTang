@@ -7,6 +7,7 @@ import CommonHeader from 'components/Common/Header';
 import { Post } from 'types/post';
 import { getPost } from 'api/post';
 import Code from 'components/Code';
+import CommonFooter from 'components/Common/Footer';
 
 type PropTypes = {
     post: Post;
@@ -68,6 +69,7 @@ const PostPage = ({ post }: PropTypes) => {
                     />
                 </section>
             </article>
+            <CommonFooter />
         </div>
     );
 };
