@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { WebLinksAddon } from 'xterm-addon-web-links';
-import { isTablet, isDesktop } from 'react-device-detect';
 import { io } from 'socket.io-client';
 
 import 'xterm/css/xterm.css';
@@ -15,10 +14,14 @@ const Body = () => {
         }
     );
 
+    const isLong = screen.height > 1080;
+    const isDesktop = screen.width > 1080;
+    const isTablet = screen.width >= 768 && screen.width <= 1080;
+
     const terminal = new Terminal({
         cursorBlink: true,
         scrollSensitivity: 2,
-        rows: isDesktop ? 60 : 40,
+        rows: isLong ? 60 : 40,
         fontSize: isDesktop || isTablet ? 16 : 10,
     });
     const fitAddon = new FitAddon();
