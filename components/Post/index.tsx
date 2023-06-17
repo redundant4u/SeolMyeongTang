@@ -1,11 +1,9 @@
 import rehypeRaw from 'rehype-raw';
-import { useQuery } from 'react-query';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import remarkGfm from 'remark-gfm';
 
 import CommonHeader from 'components/Common/Header';
 import { Post } from 'types/post';
-import { getPost } from 'api/post';
 import Code from 'components/Code';
 import CommonFooter from 'components/Common/Footer';
 
@@ -14,15 +12,6 @@ type PropTypes = {
 };
 
 const PostPage = ({ post }: PropTypes) => {
-    const { data } = useQuery(['post', post], async () => getPost(postId), {
-        initialData: post,
-    });
-    const postId = data.SK;
-
-    if (!data) {
-        return <div />;
-    }
-
     const date = new Date(post.CreatedAt).toLocaleString('ko-KR', {
         year: 'numeric',
         month: 'short',
@@ -35,14 +24,14 @@ const PostPage = ({ post }: PropTypes) => {
             <article className="pt-8 pr-4 pl-4 mt-0 mb-16 mr-auto ml-auto text-justify max-w-[800px]">
                 <div className="pb-12">
                     <h1 className="text-3xl font-extrabold pb-3">
-                        <span>{data.Title}</span>
+                        <span>{post.Title}</span>
                     </h1>
                     <span className="opacity-60">{date}</span>
                 </div>
                 <section>
                     <ReactMarkdown
                         className="prose dark:prose-invert max-w-[800px]"
-                        children={data.Content}
+                        children={post.Content}
                         rehypePlugins={[rehypeRaw]}
                         remarkPlugins={[remarkGfm]}
                         components={{

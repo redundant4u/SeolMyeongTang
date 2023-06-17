@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 
 const Header = () => {
     return (
@@ -29,18 +28,6 @@ const Header = () => {
                     <a href="mailto:physiogel@pusan.ac.kr">physiogel@pusan.ac.kr</a>
                 </p>
             </div>
-            <li className="flex mt-16 mb-6 pb-2 space-x-4 border-b dark:border-[#343539] font-bold">
-                <ul>
-                    <Link href="/">
-                        <h2 className="opacity-60">목록</h2>
-                    </Link>
-                </ul>
-                <ul>
-                    <Link href="/me">
-                        <h2 className="opacity-60">소개</h2>
-                    </Link>
-                </ul>
-            </li>
         </header>
     );
 };

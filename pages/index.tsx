@@ -17,10 +17,10 @@ const HomePage: NextPage = ({ posts }: PropTypes) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-    const database = await getPosts();
+    const posts = await getPosts();
 
     return {
-        props: { database },
+        props: { posts },
     };
 };
 
