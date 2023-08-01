@@ -14,8 +14,25 @@ article > section > div > figure {
     align-items: center;
     justify-content: center;
     text-align: center;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+article > section > div > p {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .xterm {
     padding: 4px 16px 16px 11px;
+}
+
+hr.open {
+    margin-top: 3rem;
+    margin-bottom: 1.25rem;
+}
+
+hr.close {
+    margin-top: 0;
+    margin-bottom: 3rem;
 }

@@ -9,6 +9,7 @@ const disabledCss = {
     'pre code': false,
     'code::before': false,
     'code::after': false,
+    'p': false,
 };
 
 module.exports = {
