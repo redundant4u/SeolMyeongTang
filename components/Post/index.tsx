@@ -1,5 +1,5 @@
 import rehypeRaw from 'rehype-raw';
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
+import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
 import CommonHeader from 'components/Common/Header';
@@ -30,20 +30,20 @@ const PostPage = ({ post }: PropTypes) => {
                     <span className="opacity-60">{date}</span>
                 </div>
                 <section>
-                    <ReactMarkdown
+                    <Markdown
                         className="prose dark:prose-invert max-w-[800px]"
                         children={post.Content}
                         rehypePlugins={[rehypeRaw]}
                         remarkPlugins={[remarkGfm]}
                         components={{
-                            code({ children, className, inline }) {
-                                const code = children[0]?.toString();
-                                const language = className ? className.replace('language-', '') : 'TEXT';
+                            code({ children, className }) {
+                                const match = /language-(\w+)/.exec(className || '');
 
-                                return inline ? (
-                                    <code className="p-1 rounded bg-[#f2f2f2] font-mono dark:bg-[#0f081c]">
-                                        {children}
-                                    </code>
+                                const code = children?.toString();
+                                const language = className ? className.replace('language-', '') : 'text';
+
+                                return !match ? (
+                                    <code className="p-1 rounded bg-[#f2f2f2] font-mono dark:bg-[#0f081c]">{code}</code>
                                 ) : (
                                     <Code code={code || ''} language={language} />
                                 );
