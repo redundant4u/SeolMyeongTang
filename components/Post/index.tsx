@@ -6,6 +6,7 @@ import CommonHeader from 'components/Common/Header';
 import { Post } from 'types/post';
 import Code from 'components/Code';
 import CommonFooter from 'components/Common/Footer';
+import ImageZoom from 'components/ImageZoom';
 
 type PropTypes = {
     post: Post;
@@ -53,6 +54,9 @@ const PostPage = ({ post }: PropTypes) => {
                                         <table>{children}</table>
                                     </div>
                                 );
+                            },
+                            img({ src, alt, width }) {
+                                return <ImageZoom src={src} alt={alt} width={width} />;
                             },
                         }}
                     />
