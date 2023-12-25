@@ -11,30 +11,41 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
     
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "16"
+          cache: "pnpm"
 
       - name: Create Env File
         run: |
           touch .env
           echo '${{ secrets.ENV }}' >> .env
 
+      - name: Cache node_modules
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install Dependencies
-        run: yarn
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: pnpm i
 
       - name: Build
-        run: yarn build
+        run: pnpm run build
 
       - name: Delete html extension
         run: |
