@@ -37,15 +37,13 @@ const PostPage = ({ post }: PropTypes) => {
                         remarkPlugins={[remarkGfm]}
                         components={{
                             code({ children, className }) {
-                                const match = /language-(\w+)/.exec(className || '');
-
                                 const code = children?.toString();
-                                const language = className ? className.replace('language-', '') : 'text';
+                                const language = className ? className.replace('language-', '') : undefined;
 
-                                return !match ? (
-                                    <code className="p-1 rounded bg-[#f2f2f2] font-mono dark:bg-[#0f081c]">{code}</code>
-                                ) : (
+                                return language ? (
                                     <Code code={code || ''} language={language} />
+                                ) : (
+                                    <code className="p-1 rounded bg-[#f2f2f2] font-mono dark:bg-[#0f081c]">{code}</code>
                                 );
                             },
                             table({ children }) {
