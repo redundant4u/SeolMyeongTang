@@ -2,9 +2,7 @@
 
 <img src="https://redundant4u.com/logo.jpeg" width="160" alt="seolmyeongtang" />
 
-Notion API를 활용한 개인 블로그 프로젝트 '설명탕'입니다
-
-[설명탕 링크](https://redundant4u.com/)
+NextJS으로 구현한 개인 블로그 프로젝트 ['설명탕'](https://redundant4u.com/)입니다
 
 ## 환경
 
@@ -20,7 +18,3 @@ Notion API를 활용한 개인 블로그 프로젝트 '설명탕'입니다
     -   GitHub Actions
     -   Nginx
     -   Shell Script
-
-## 구성도
-
-(추후 업데이트 예정)
