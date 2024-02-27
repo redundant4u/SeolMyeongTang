@@ -1,10 +1,62 @@
-import Image from 'next/image';
+import { useEffect, useRef } from 'react';
+import { io } from 'socket.io-client';
+import { PixelEditor } from 'utils/crdt/PixelEditor';
+
+import TrashSVG from 'public/icons/trash.svg';
+import { RGB } from 'utils/crdt/PixelData';
 
 const Header = () => {
+    const socket = io(
+        process.env.NODE_ENV === 'production' ? `${process.env.CRDT_SOCKET_URL}` : 'http://localhost:3000/crdt',
+        {
+            transports: ['websocket'],
+        }
+    );
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const paletteRef = useRef<HTMLInputElement>(null);
+
+    const clearCanvas = () => socket.emit('clear');
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const palette = paletteRef.current;
+
+        if (!canvas || !palette) {
+            return;
+        }
+
+        const artBoard = { w: 64, h: 64 };
+        const editor = new PixelEditor(canvas, artBoard);
+
+        editor.onchange = (state) => socket.emit('write', state);
+        palette.oninput = () => {
+            const hex = palette.value.substring(1).match(/[\da-f]{2}/g) || [];
+            const rgb = hex.map((byte) => parseInt(byte, 16));
+
+            if (rgb.length === 3) {
+                editor.color = rgb as RGB;
+            }
+        };
+
+        socket.once('init', (state) => editor.receive(state));
+        socket.on('merge', (state) => editor.receive(state));
+        socket.on('clear', () => editor.clear());
+
+        return () => {
+            editor.onchange = () => null;
+            socket.disconnect();
+        };
+    }, []);
+
     return (
         <header className="leading-normal">
             <div className="flex pt-12 pb-8">
-                <Image src="/logo.jpeg" alt="logo" width={160} height={160} />
+                <div>
+                    <canvas className="bg-white w-64 h-64 border-2 cursor-crosshair touch-none" ref={canvasRef} />
+                </div>
+                <div className="pl-2 flex flex-col justify-end">
+                    <input className="color mb-2 w-6 h-6" ref={paletteRef} type="color" defaultValue="#000000" />
+                    <TrashSVG onClick={clearCanvas} className="dark:fill-gray-200" />
+                </div>
             </div>
             <h1 className="font-extrabold text-4xl mb-8">설명탕</h1>
             <div className="opacity-70">
