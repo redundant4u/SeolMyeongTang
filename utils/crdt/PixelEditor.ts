@@ -9,7 +9,7 @@ export class PixelEditor {
 
     private _artboard: ArtBoard;
 
-    private _data: PixelData = new PixelData('seolmyeongtang');
+    private _data: PixelData = new PixelData();
 
     private _color: RGB = [0, 0, 0];
 

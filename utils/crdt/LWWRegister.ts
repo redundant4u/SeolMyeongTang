@@ -1,30 +1,27 @@
 export class LWWRegister<T> {
-    readonly id: string;
-
-    state: [peer: string, timestamp: number, value: T];
+    state: [timestamp: number, value: T];
 
     get value() {
-        return this.state[2];
+        return this.state[1];
     }
 
-    constructor(id: string, state: [string, number, T]) {
-        this.id = id;
+    constructor(state: [number, T]) {
         this.state = state;
     }
 
     set(value: T) {
-        this.state = [this.id, this.state[1] + 1, value];
+        this.state = [this.state[0] + 1, value];
     }
 
-    merge(state: [peer: string, timestamp: number, value: T]) {
-        const [remotePeer, remoteTimestamp] = state;
-        const [localPeer, localTimestamp] = this.state;
+    merge(state: [timestamp: number, value: T]) {
+        const [remoteTimestamp] = state;
+        const [localTimestamp] = this.state;
 
         if (localTimestamp > remoteTimestamp) {
             return;
         }
 
-        if (localTimestamp === remoteTimestamp && localPeer > remotePeer) {
+        if (localTimestamp === remoteTimestamp) {
             return;
         }
 

@@ -3,13 +3,10 @@ import { LWWMap } from './LWWMap';
 export type RGB = [red: number, green: number, blue: number];
 
 export class PixelData {
-    readonly id: string;
-
     private data: LWWMap<RGB>;
 
-    constructor(id: string) {
-        this.id = id;
-        this.data = new LWWMap(this.id, {});
+    constructor() {
+        this.data = new LWWMap({});
     }
 
     static key(x: number, y: number) {
@@ -42,6 +39,6 @@ export class PixelData {
     }
 
     clear() {
-        this.data = new LWWMap(this.id, {});
+        this.data = new LWWMap({});
     }
 }

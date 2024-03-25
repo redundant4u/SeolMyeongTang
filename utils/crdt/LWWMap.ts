@@ -9,14 +9,11 @@ type State<T> = {
 };
 
 export class LWWMap<T> {
-    readonly id: string;
     private _data = new Map<string, LWWRegister<T | null>>();
 
-    constructor(id: string, state: State<T>) {
-        this.id = id;
-
+    constructor(state: State<T>) {
         for (const [key, register] of Object.entries(state)) {
-            this._data.set(key, new LWWRegister(this.id, register));
+            this._data.set(key, new LWWRegister(register));
         }
     }
 
@@ -58,7 +55,7 @@ export class LWWMap<T> {
         if (register) {
             register.set(value);
         } else {
-            this._data.set(key, new LWWRegister(this.id, [this.id, 1, value]));
+            this._data.set(key, new LWWRegister([1, value]));
         }
     }
 
@@ -73,7 +70,7 @@ export class LWWMap<T> {
             if (local) {
                 local.merge(remote);
             } else {
-                this._data.set(key, new LWWRegister(this.id, remote));
+                this._data.set(key, new LWWRegister(remote));
             }
         }
     }
