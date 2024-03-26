@@ -11,7 +11,7 @@ export class PixelEditor {
 
     private _data: PixelData = new PixelData();
 
-    private _color: RGB = [0, 0, 0];
+    private _color: RGB = '000000';
 
     private _painted = new Set<string>();
 
@@ -55,7 +55,9 @@ export class PixelEditor {
                 this._el.setPointerCapture(e.pointerId);
             }
             case 'pointermove': {
-                if (!this._el.hasPointerCapture(e.pointerId)) return;
+                if (!this._el.hasPointerCapture(e.pointerId)) {
+                    return;
+                }
 
                 const x = Math.floor((this._artboard.w * e.offsetX) / this._el.clientWidth),
                     y = Math.floor((this._artboard.h * e.offsetY) / this._el.clientHeight);
@@ -126,10 +128,11 @@ export class PixelEditor {
 
                 const offset = offsetY + offsetX;
 
-                const [r, g, b] = this._data.get(col, row);
-                buffer[offset] = r;
-                buffer[offset + 1] = g;
-                buffer[offset + 2] = b;
+                const hex = this._data.get(col, row);
+
+                buffer[offset] = parseInt(hex.substring(0, 2), 16);
+                buffer[offset + 1] = parseInt(hex.substring(2, 4), 16);
+                buffer[offset + 2] = parseInt(hex.substring(4, 6), 16);
                 buffer[offset + 3] = 255;
             }
         }

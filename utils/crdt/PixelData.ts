@@ -1,6 +1,6 @@
 import { LWWMap } from './LWWMap';
 
-export type RGB = [red: number, green: number, blue: number];
+export type RGB = string;
 
 export class PixelData {
     private data: LWWMap<RGB>;
@@ -24,9 +24,9 @@ export class PixelData {
 
     get(x: number, y: number): RGB {
         const key = PixelData.key(x, y);
-
         const register = this.data.get(key);
-        return register ?? [255, 255, 255];
+
+        return register ?? 'ffffff';
     }
 
     delete(x: number, y: number) {
