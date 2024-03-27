@@ -3,7 +3,6 @@ import { io } from 'socket.io-client';
 import { PixelEditor } from 'utils/crdt/PixelEditor';
 
 import TrashSVG from 'public/icons/trash.svg';
-import { RGB } from 'utils/crdt/PixelData';
 
 const Header = () => {
     const socket = io(
@@ -28,14 +27,7 @@ const Header = () => {
         const editor = new PixelEditor(canvas, artBoard);
 
         editor.onchange = (state) => socket.emit('write', state);
-        palette.oninput = () => {
-            const hex = palette.value.substring(1).match(/[\da-f]{2}/g) || [];
-            const rgb = hex.map((byte) => parseInt(byte, 16));
-
-            if (rgb.length === 3) {
-                editor.color = rgb as RGB;
-            }
-        };
+        palette.oninput = () => (editor.color = palette.value.substring(1));
 
         socket.once('init', (state) => editor.receive(state));
         socket.on('merge', (state) => editor.receive(state));

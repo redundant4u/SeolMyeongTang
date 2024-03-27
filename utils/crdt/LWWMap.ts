@@ -1,79 +1,74 @@
 import { LWWRegister } from './LWWRegister';
+import { RGB } from './PixelData';
 
-type Value<T> = {
-    [key: string]: T;
+const INITIAL_TIMESTAMP = 1;
+
+type State = {
+    colors: RGB[];
+    data: {
+        [coord: string]: LWWRegister['state'];
+    };
 };
 
-type State<T> = {
-    [key: string]: LWWRegister<T | null>['state'];
-};
-
-export class LWWMap<T> {
-    readonly id: string;
-    private _data = new Map<string, LWWRegister<T | null>>();
-
-    constructor(id: string, state: State<T>) {
-        this.id = id;
-
-        for (const [key, register] of Object.entries(state)) {
-            this._data.set(key, new LWWRegister(this.id, register));
-        }
-    }
-
-    get value() {
-        const value: Value<T> = {};
-
-        for (const [key, register] of this._data.entries()) {
-            if (register.value !== null) {
-                value[key] = register.value;
-            }
-        }
-
-        return value;
-    }
+export class LWWMap {
+    private _colors: string[] = ['000000'];
+    private _data = new Map<string, LWWRegister>();
 
     get state() {
-        const state: State<T> = {};
+        const state: State = {
+            colors: [],
+            data: {},
+        };
 
-        for (const [key, register] of this._data.entries()) {
+        for (const [coord, register] of this._data.entries()) {
             if (register) {
-                state[key] = register.state;
+                state.colors = this._colors;
+                state.data[coord] = register.state;
             }
         }
 
         return state;
     }
 
-    has(key: string) {
-        return this._data.get(key)?.value !== null;
+    has(coord: string) {
+        return this._data.get(coord)?.colorIndex !== null;
     }
 
-    get(key: string) {
-        return this._data.get(key)?.value;
+    get(coord: string) {
+        return this._data.get(coord)?.colorIndex;
     }
 
-    set(key: string, value: T) {
-        const register = this._data.get(key);
+    set(coord: string, color: RGB) {
+        let colorIndex = this._colors.indexOf(color);
+
+        if (colorIndex === -1) {
+            this._colors.push(color);
+            this._colors = [...new Set(this._colors)];
+            colorIndex = this._colors.length - 1;
+        }
+
+        const register = this._data.get(coord);
 
         if (register) {
-            register.set(value);
+            register.set(colorIndex);
         } else {
-            this._data.set(key, new LWWRegister(this.id, [this.id, 1, value]));
+            this._data.set(coord, new LWWRegister(INITIAL_TIMESTAMP, colorIndex));
         }
     }
 
-    delete(key: string) {
-        this._data.get(key)?.set(null);
+    findColor(colorIndex: number) {
+        return this._colors[colorIndex];
     }
 
-    merge(state: State<T>) {
-        for (const [key, remote] of Object.entries(state)) {
-            const local = this._data.get(key);
+    merge(state: State) {
+        for (const [coord, remote] of Object.entries(state.data)) {
+            const local = this._data.get(coord);
 
             if (local) {
                 local.merge(remote);
             } else {
-                this._data.set(key, new LWWRegister(this.id, remote));
+                this._colors = state.colors;
+                this._data.set(coord, new LWWRegister(remote[0], remote[1]));
             }
         }
     }
