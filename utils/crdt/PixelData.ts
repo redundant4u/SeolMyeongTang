@@ -3,10 +3,10 @@ import { LWWMap } from './LWWMap';
 export type RGB = string;
 
 export class PixelData {
-    private data: LWWMap<RGB>;
+    private data: LWWMap;
 
     constructor() {
-        this.data = new LWWMap({});
+        this.data = new LWWMap();
     }
 
     static key(x: number, y: number) {
@@ -17,21 +17,18 @@ export class PixelData {
         return this.data.state;
     }
 
-    set(x: number, y: number, value: RGB) {
-        const key = PixelData.key(x, y);
-        this.data.set(key, value);
+    set(x: number, y: number, color: RGB) {
+        const coord = PixelData.key(x, y);
+        this.data.set(coord, color);
     }
 
     get(x: number, y: number): RGB {
-        const key = PixelData.key(x, y);
-        const register = this.data.get(key);
+        const coord = PixelData.key(x, y);
 
-        return register ?? 'ffffff';
-    }
+        const colorIndex = this.data.get(coord);
+        const color = colorIndex !== undefined ? this.data.findColor(colorIndex) : 'ffffff';
 
-    delete(x: number, y: number) {
-        const key = PixelData.key(x, y);
-        this.data.delete(key);
+        return color;
     }
 
     merge(state: PixelData['state']) {
@@ -39,6 +36,6 @@ export class PixelData {
     }
 
     clear() {
-        this.data = new LWWMap({});
+        this.data = new LWWMap();
     }
 }

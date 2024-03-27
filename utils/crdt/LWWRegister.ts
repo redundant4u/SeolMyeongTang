@@ -1,19 +1,19 @@
-export class LWWRegister<T> {
-    state: [timestamp: number, value: T];
+export class LWWRegister {
+    state: [timestamp: number, colorIndex: number];
 
-    get value() {
+    get colorIndex() {
         return this.state[1];
     }
 
-    constructor(state: [number, T]) {
-        this.state = state;
+    constructor(timestamp: number, colorIndex: number) {
+        this.state = [timestamp, colorIndex];
     }
 
-    set(value: T) {
-        this.state = [this.state[0] + 1, value];
+    set(colorIndex: number) {
+        this.state = [this.state[0] + 1, colorIndex];
     }
 
-    merge(state: [timestamp: number, value: T]) {
+    merge(state: [timestamp: number, colorIndex: number]) {
         const [remoteTimestamp] = state;
         const [localTimestamp] = this.state;
 
