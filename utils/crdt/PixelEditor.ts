@@ -86,31 +86,31 @@ export class PixelEditor {
 
         if (!this.checkPainted(x, y)) {
             this._data.set(x, y, this._color);
-        }
 
-        let [x0, y0] = this._prev || [x, y];
+            let [x0, y0] = this._prev || [x, y];
 
-        const dx = x - x0,
-            dy = y - y0;
+            const dx = x - x0,
+                dy = y - y0;
 
-        const steps = Math.max(Math.abs(dx), Math.abs(dy));
-        const xinc = dx / steps,
-            yinc = dy / steps;
+            const steps = Math.max(Math.abs(dx), Math.abs(dy));
+            const xinc = dx / steps,
+                yinc = dy / steps;
 
-        for (let i = 0; i < steps; i++) {
-            x0 += xinc;
-            y0 += yinc;
+            for (let i = 0; i < steps; i++) {
+                x0 += xinc;
+                y0 += yinc;
 
-            const x1 = Math.round(x0);
-            const y1 = Math.round(y0);
+                const x1 = Math.round(x0);
+                const y1 = Math.round(y0);
 
-            if (!this.checkPainted(x1, y1)) {
-                this._data.set(x1, y1, this._color);
+                if (!this.checkPainted(x1, y1)) {
+                    this._data.set(x1, y1, this._color);
+                }
             }
-        }
 
-        this.draw();
-        this.notify();
+            this.draw();
+            this.notify();
+        }
     }
 
     private async draw() {
