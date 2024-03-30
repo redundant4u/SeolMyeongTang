@@ -3,7 +3,7 @@ import { RGB } from './PixelData';
 
 const INITIAL_TIMESTAMP = 1;
 
-type State = {
+type PixelState = {
     colors: RGB[];
     data: {
         [coord: string]: LWWRegister['state'];
@@ -15,19 +15,19 @@ export class LWWMap {
     private _data = new Map<string, LWWRegister>();
 
     get state() {
-        const state: State = {
+        const pState: PixelState = {
             colors: [],
             data: {},
         };
 
         for (const [coord, register] of this._data.entries()) {
             if (register) {
-                state.colors = this._colors;
-                state.data[coord] = register.state;
+                pState.colors = this._colors;
+                pState.data[coord] = register.state;
             }
         }
 
-        return state;
+        return pState;
     }
 
     has(coord: string) {
@@ -60,14 +60,14 @@ export class LWWMap {
         return this._colors[colorIndex];
     }
 
-    merge(state: State) {
-        for (const [coord, remote] of Object.entries(state.data)) {
+    merge(pState: PixelState) {
+        for (const [coord, remote] of Object.entries(pState.data)) {
             const local = this._data.get(coord);
 
             if (local) {
                 local.merge(remote);
             } else {
-                this._colors = state.colors;
+                this._colors = pState.colors;
                 this._data.set(coord, new LWWRegister(remote[0], remote[1]));
             }
         }

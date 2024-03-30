@@ -13,15 +13,11 @@ export class LWWRegister {
         this.state = [this.state[0] + 1, colorIndex];
     }
 
-    merge(state: [timestamp: number, colorIndex: number]) {
+    merge(state: LWWRegister['state']) {
         const [remoteTimestamp] = state;
         const [localTimestamp] = this.state;
 
-        if (localTimestamp > remoteTimestamp) {
-            return;
-        }
-
-        if (localTimestamp === remoteTimestamp) {
+        if (localTimestamp >= remoteTimestamp) {
             return;
         }
 
