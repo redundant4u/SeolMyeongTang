@@ -17,7 +17,7 @@ export class LWWRegister {
         const [remoteTimestamp] = state;
         const [localTimestamp] = this.state;
 
-        if (localTimestamp >= remoteTimestamp) {
+        if (localTimestamp > remoteTimestamp) {
             return;
         }
 
