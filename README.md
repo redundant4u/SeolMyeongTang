@@ -30,3 +30,10 @@
     -   GitHub Actions
     -   NGINX
     -   Shell script
+
+## 참고
+
+-   이전 `.yarn` 파일로 git clone을 하면 release 브랜치 떄문에 크기가 커지므로 아래의 명령어를 이용
+    ```
+    git clone --depth 1 https://github.com/redundant4u/SeolMyeongTang.git
+    ```
