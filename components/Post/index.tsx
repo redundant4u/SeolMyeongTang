@@ -22,7 +22,7 @@ const PostPage = ({ post }: PropTypes) => {
     return (
         <div>
             <CommonHeader />
-            <article className="pt-8 pr-4 pl-4 mt-0 mb-16 mr-auto ml-auto text-justify max-w-[800px]">
+            <article className="pt-8 pr-4 pl-4 mt-0 mb-16 mr-auto ml-auto text-justify max-w-[850px]">
                 <div className="pb-12">
                     <h1 className="text-3xl font-extrabold pb-3">
                         <span>{post.Title}</span>
