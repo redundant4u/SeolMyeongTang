@@ -3,10 +3,10 @@ import Head from 'next/head';
 
 import PostPage from 'components/Post';
 import { getPost, getPosts } from 'api/post';
-import { Post } from 'types/post';
+import { PostType } from 'types/post';
 
 type PropTypes = {
-    post: Post;
+    post: PostType;
 };
 
 const Post = ({ post }: PropTypes) => {

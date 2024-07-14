@@ -3,13 +3,13 @@ import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
 import CommonHeader from 'components/Common/Header';
-import { Post } from 'types/post';
+import { PostType } from 'types/post';
 import Code from 'components/Code';
 import CommonFooter from 'components/Common/Footer';
 import ImageZoom from 'components/ImageZoom';
 
 type PropTypes = {
-    post: Post;
+    post: PostType;
 };
 
 const PostPage = ({ post }: PropTypes) => {

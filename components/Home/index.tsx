@@ -5,10 +5,10 @@ import CommonFooter from 'components/Common/Footer';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { Post } from 'types/post';
+import { PostType } from 'types/post';
 
 type PropTypes = {
-    posts: Post[];
+    posts: PostType[];
 };
 
 const Home = ({ posts }: PropTypes) => {

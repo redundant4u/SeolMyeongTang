@@ -1,15 +1,15 @@
 import Link from 'next/link';
 
-import { Post } from 'types/post';
+import { PostType } from 'types/post';
 import SearchSVG from 'public/icons/search.svg';
 import { useState } from 'react';
 
 type PropTypes = {
-    posts: Post[];
+    posts: PostType[];
 };
 
 const Body = ({ posts }: PropTypes) => {
-    const [postData, setPostData] = useState<Post[]>(posts);
+    const [postData, setPostData] = useState<PostType[]>(posts);
     const [isHidden, setIsHidden] = useState(true);
 
     const onClick = () => {

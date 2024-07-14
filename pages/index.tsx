@@ -2,10 +2,10 @@ import { GetStaticProps, NextPage } from 'next';
 
 import { Home } from 'components';
 import { getPosts } from 'api/post';
-import { Post } from 'types/post';
+import { PostType } from 'types/post';
 
 type PropTypes = {
-    posts: Post[];
+    posts: PostType[];
 };
 
 const HomePage: NextPage = ({ posts }: PropTypes) => {
