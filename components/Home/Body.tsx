@@ -16,7 +16,7 @@ const Body = ({ posts }: PropTypes) => {
         setIsHidden(!isHidden);
     };
 
-    const onChnage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const keyword = e.target.value;
         const filteredData = posts.filter((post) => post.Title.includes(keyword));
 
@@ -46,7 +46,7 @@ const Body = ({ posts }: PropTypes) => {
                             type="text"
                             id="search"
                             className="pt-1 pr-2.5 pb-1 pl-2.5 max-w-[12rem] rounded-lg bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600"
-                            onChange={onChnage}
+                            onChange={onChange}
                         />
                     </ul>
                 </div>
@@ -56,20 +56,20 @@ const Body = ({ posts }: PropTypes) => {
                     {postData &&
                         postData
                             .sort((a, b) => new Date(b.CreatedAt).getTime() - new Date(a.CreatedAt).getTime())
-                            .map((post, id) => {
+                            .map((post, i) => {
                                 const date = new Date(post.CreatedAt).toLocaleString('ko-KR', {
                                     year: 'numeric',
                                     month: 'short',
                                     day: 'numeric',
                                 });
                                 return (
-                                    <li key={id} className="mb-16">
+                                    <li key={`post${i}`} className="mb-16">
                                         <h1 className="mb-2 text-2xl font-bold">
                                             <Link href={`post/${post.SK}`} className="text-inherit">
                                                 <p>{post.Title}</p>
                                             </Link>
                                         </h1>
-                                        <p className="mb-2 opacity-60">{date}</p>
+                                        <p className="mb-1 opacity-60">{date}</p>
                                         <div className="flex space-x-1 text-sm opacity-50">
                                             {post.Tags?.map((tag, i) => <p key={`tag${i}`}>#{tag}</p>)}
                                         </div>
