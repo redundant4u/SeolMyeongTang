@@ -70,6 +70,9 @@ const Body = ({ posts }: PropTypes) => {
                                             </Link>
                                         </h1>
                                         <p className="mb-2 opacity-60">{date}</p>
+                                        <div className="flex space-x-1 text-sm opacity-50">
+                                            {post.Tags?.map((tag, i) => <p key={`tag${i}`}>#{tag}</p>)}
+                                        </div>
                                     </li>
                                 );
                             })}
