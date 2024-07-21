@@ -4,6 +4,8 @@ import { ChatType } from 'types/chat';
 import dayjs from 'dayjs';
 import { io } from 'socket.io-client';
 
+import ChatSvg from 'public/icons/chat.svg';
+
 const socket = io(
     process.env.NODE_ENV === 'production' ? `${process.env.CHAT_URL}` : 'https://sub.redundant4u.com/chat',
     {
@@ -57,7 +59,9 @@ const Chat = () => {
     return (
         <div>
             {!isOpen ? (
-                <button className="fixed bottom-4 right-4 bg-black dark:bg-white rounded-full p-6" onClick={toggle} />
+                <div className="fixed bottom-4 right-4 rounded-full bg-slate-600 p-3">
+                    <ChatSvg width={28} height={28} fill="#FFFFFF" onClick={toggle} />
+                </div>
             ) : (
                 <div className="flex flex-col fixed bottom-4 right-4 left-4 sm:left-auto bg-white dark:bg-slate-800 border border-gray-300 rounded-lg overflow-hidden w-auto sm:w-[24rem] h-[28rem] sm:h-[32rem]">
                     <div className="pt-3 pr-4 pb-3 text-right">
