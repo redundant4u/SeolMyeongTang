@@ -10,7 +10,6 @@ const HTTP_METHOD = {
 } as const;
 
 const axiosInstance: AxiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_ENDPOINT,
     timeout: process.env.NODE_ENV === 'production' ? 3000 : 30000,
 });
 
@@ -39,6 +38,7 @@ const createApiMethod =
         return _axiosInstance({
             ...{ url, ...config },
             method,
+            baseURL: config?.baseURL || process.env.NEXT_PUBLIC_API_ENDPOINT,
         }).then((res) => handleResponse(res));
     };
 

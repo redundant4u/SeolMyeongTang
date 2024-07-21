@@ -11,6 +11,7 @@ module.exports = {
     env: {
         TERMINAL_SOCKET_URL: process.env.TERMINAL_SOCKET_URL,
         CRDT_SOCKET_URL: process.env.CRDT_SOCKET_URL,
+        CHAT_URL: process.env.CHAT_URL,
     },
     webpack: (config) => {
         config.module.rules.push({

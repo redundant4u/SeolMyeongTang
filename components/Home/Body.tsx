@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { PostType } from 'types/post';
 import SearchSVG from 'public/icons/search.svg';
 import { useState } from 'react';
+import Chat from './Chat';
 
 type PropTypes = {
     posts: PostType[];
@@ -78,6 +79,7 @@ const Body = ({ posts }: PropTypes) => {
                             })}
                 </ol>
             </div>
+            <Chat />
         </>
     );
 };
