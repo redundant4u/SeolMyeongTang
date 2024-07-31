@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter';
+import SyntaxHighlighter from 'react-syntax-highlighter/dist/cjs';
 import { atomOneDarkReasonable } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 
 import CopySVG from 'public/icons/copy.svg';
