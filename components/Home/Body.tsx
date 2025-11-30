@@ -38,6 +38,11 @@ const Body = ({ posts }: PropTypes) => {
                             <h2 className="opacity-60">소개</h2>
                         </Link>
                     </ul>
+                    <ul>
+                        <Link href="/session">
+                            <h2 className="opacity-60">환경</h2>
+                        </Link>
+                    </ul>
                 </div>
                 <div className="flex items-center space-x-2">
                     <SearchSVG onClick={onClick} className="dark:fill-gray-500" />
