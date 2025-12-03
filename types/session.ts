@@ -12,6 +12,10 @@ export type CreateSessionResponse = {
     sessionId: string;
 };
 
+export type DeleteSessionRequest = {
+    sessionId: string;
+};
+
 export type SessionType = {
     id: string;
     name: string;

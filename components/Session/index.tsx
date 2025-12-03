@@ -1,16 +1,17 @@
 import CommonFooter from 'components/Common/Footer';
 import SessionHeader from './Header';
 import SessionBody from './Body';
-import { SessionType } from 'types/session';
+import { DeleteSessionRequest, SessionType } from 'types/session';
 
 type PropTypes = {
     loading: boolean;
     errorMessage: string | null;
     sessions: SessionType[];
     onCreateSession: () => void;
+    onDeleteSession: (data: DeleteSessionRequest) => void;
 };
 
-const Session = ({ loading, errorMessage, sessions, onCreateSession }: PropTypes) => {
+const Session = ({ loading, errorMessage, sessions, onCreateSession, onDeleteSession }: PropTypes) => {
     return (
         <>
             <SessionHeader />
@@ -19,6 +20,7 @@ const Session = ({ loading, errorMessage, sessions, onCreateSession }: PropTypes
                 errorMessage={errorMessage}
                 sessions={sessions}
                 onCreateSession={onCreateSession}
+                onDeleteSession={onDeleteSession}
             />
             <CommonFooter />
         </>

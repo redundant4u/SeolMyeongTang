@@ -1,7 +1,7 @@
-import { createSession, getSessions } from 'api/session';
+import { createSession, deleteSession, getSessions } from 'api/session';
 import Session from 'components/Session';
 import { useEffect, useState } from 'react';
-import { SessionType } from 'types/session';
+import { DeleteSessionRequest, SessionType } from 'types/session';
 
 const SessionPage = () => {
     const [loading, setLoading] = useState(false);
@@ -10,7 +10,7 @@ const SessionPage = () => {
 
     const host = '192.168.117.3';
     const port = 32000;
-    const redirect = `/vnc/vnc_lite.html?autoconnect=ture&host=${host}&port=${port}&path=?token=vnc-`;
+    const redirect = `/vnc?autoconnect=ture&host=${host}&port=${port}&path=?token=`;
 
     const onCreateSession = async () => {
         createSession({ name: 'test' })
@@ -34,6 +34,17 @@ const SessionPage = () => {
             });
     };
 
+    const onDeleteSession = async (data: DeleteSessionRequest) => {
+        deleteSession(data)
+            .then((res) => {
+                console.log(res);
+                setSessions((prev) => prev.filter((s) => s.id !== data.sessionId));
+            })
+            .catch(() => {
+                setErrorMessage('cannot delete session');
+            });
+    };
+
     useEffect(() => {
         setLoading(true);
 
@@ -52,7 +63,13 @@ const SessionPage = () => {
     }, []);
 
     return (
-        <Session loading={loading} errorMessage={errorMessage} sessions={sessions} onCreateSession={onCreateSession} />
+        <Session
+            loading={loading}
+            errorMessage={errorMessage}
+            sessions={sessions}
+            onCreateSession={onCreateSession}
+            onDeleteSession={onDeleteSession}
+        />
     );
 };
 
