@@ -1,65 +1,84 @@
-import { createSession, deleteSession, getSessions } from 'api/session';
+'use client';
+
+import { createClientId, createSession, deleteSession, getSessions } from 'api/session';
 import Session from 'components/Session';
 import { useEffect, useState } from 'react';
 import { DeleteSessionRequest, SessionType } from 'types/session';
 
 const SessionPage = () => {
     const [loading, setLoading] = useState(false);
+    const [clientId, setClientId] = useState<string | null>(null);
     const [sessions, setSessions] = useState<SessionType[]>([]);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const host = '192.168.117.3';
+    const host = '192.168.117.2';
     const port = 32000;
     const redirect = `/vnc?autoconnect=ture&host=${host}&port=${port}&path=?token=`;
 
     const onCreateSession = async () => {
-        createSession({ name: 'test' })
-            .then((res) => {
-                const { name, sessionId } = res;
+        try {
+            let id = clientId;
 
-                const newSession: SessionType = {
-                    id: sessionId,
-                    name,
-                    href: redirect + sessionId,
-                };
-                setSessions((prev) => [newSession, ...prev]);
-            })
-            .catch((e) => {
-                const errorData = e.response?.data;
-                switch (errorData.code) {
-                    case 'SESSION_LIMIT':
-                        setErrorMessage(errorData.message);
-                        break;
-                }
-            });
+            if (!id) {
+                const { clientId: newClientId } = await createClientId();
+                localStorage.setItem('clientId', newClientId);
+                id = newClientId;
+            }
+
+            const { name, sessionId } = await createSession(id, { name: 'test' });
+            const newSession: SessionType = {
+                id: sessionId,
+                name,
+                href: `${redirect}${id}:${sessionId}`,
+            };
+
+            setSessions((prev) => [newSession, ...prev]);
+        } catch (_) {
+            setErrorMessage('failed to create session');
+        }
     };
 
     const onDeleteSession = async (data: DeleteSessionRequest) => {
-        deleteSession(data)
-            .then((res) => {
-                console.log(res);
-                setSessions((prev) => prev.filter((s) => s.id !== data.sessionId));
-            })
-            .catch(() => {
-                setErrorMessage('cannot delete session');
-            });
+        if (!clientId) {
+            return setErrorMessage('cannot delete session');
+        }
+
+        try {
+            await deleteSession(clientId, data);
+            setSessions((prev) => prev.filter((s) => s.id !== data.sessionId));
+        } catch {
+            setErrorMessage('cannot delete session');
+        }
     };
 
     useEffect(() => {
-        setLoading(true);
+        const fetchSessions = async () => {
+            if (!clientId) return;
 
-        getSessions()
-            .then((res) => {
+            setLoading(true);
+
+            try {
+                const res = await getSessions(clientId);
+
                 const sessions: SessionType[] = res.map((s) => ({
                     id: s.sessionId,
                     name: s.name,
-                    href: redirect + s.sessionId,
+                    href: `${redirect}${clientId}:${s.sessionId}`,
                 }));
+
                 setSessions(sessions);
-            })
-            .finally(() => {
+            } catch (_) {
+                setErrorMessage('Failed to load sessions');
+            } finally {
                 setLoading(false);
-            });
+            }
+        };
+
+        fetchSessions();
+    }, [clientId]);
+
+    useEffect(() => {
+        setClientId(localStorage.getItem('clientId'));
     }, []);
 
     return (
