@@ -30,34 +30,42 @@ const PostPage = ({ post }: PropTypes) => {
                     <span className="opacity-60">{date}</span>
                 </div>
                 <section>
-                    <Markdown
-                        className="prose dark:prose-invert max-w-[800px]"
-                        children={post.Content}
-                        rehypePlugins={[rehypeRaw]}
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                            code({ children, className }) {
-                                const code = children?.toString();
-                                const language = className ? className.replace('language-', '') : undefined;
+                    <div className="prose dark:prose-invert max-w-[800px]">
+                        <Markdown
+                            rehypePlugins={[rehypeRaw]}
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                                code({ className, children }) {
+                                    const text = String(children || '');
+                                    const lang = /language-(\w+)/.exec(className || '');
 
-                                return language ? (
-                                    <Code code={code || ''} language={language} />
-                                ) : (
-                                    <code className="p-1 rounded bg-[#f2f2f2] font-mono dark:bg-[#0f081c]">{code}</code>
-                                );
-                            },
-                            table({ children }) {
-                                return (
-                                    <div className="overflow-x-auto whitespace-pre">
-                                        <table>{children}</table>
-                                    </div>
-                                );
-                            },
-                            img({ src, alt, width }) {
-                                return <ImageZoom src={src} alt={alt} width={width} />;
-                            },
-                        }}
-                    />
+                                    if (lang) {
+                                        return <Code code={text} language={lang[1]} />;
+                                    }
+
+                                    return (
+                                        <span className="p-1 rounded bg-[#f2f2f2] font-mono dark:bg-[#0f081c]">
+                                            <code>{text}</code>
+                                        </span>
+                                    );
+                                },
+
+                                table({ children }) {
+                                    return (
+                                        <div className="overflow-x-auto whitespace-pre">
+                                            <table>{children}</table>
+                                        </div>
+                                    );
+                                },
+
+                                img({ src, alt }) {
+                                    return <ImageZoom src={src || ''} alt={alt || ''} />;
+                                },
+                            }}
+                        >
+                            {post.Content}
+                        </Markdown>
+                    </div>
                 </section>
             </article>
             <CommonFooter />
