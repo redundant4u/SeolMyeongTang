@@ -1,9 +1,12 @@
+/**
+ * @type {import('next').NextConfig}
+ */
 module.exports = {
     compiler: {
         removeConsole: process.env.NODE_ENV === 'production' ? true : false,
     },
     trailingSlash: false,
-    reactStrictMode: false,
+    reactStrictMode: true,
     swcMinify: true,
     images: {
         unoptimized: true,

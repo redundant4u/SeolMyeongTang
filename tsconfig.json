@@ -20,7 +20,7 @@
         "noFallthroughCasesInSwitch": false,
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
-        "strict": false,
+        "strict": true,
         "noEmit": true,
         "esModuleInterop": true,
         "moduleResolution": "node",

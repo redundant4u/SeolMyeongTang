@@ -8,7 +8,7 @@ type PropTypes = {
     posts: PostType[];
 };
 
-const HomePage: NextPage = ({ posts }: PropTypes) => {
+const HomePage: NextPage<PropTypes> = ({ posts }) => {
     return (
         <>
             <Home posts={posts} />
