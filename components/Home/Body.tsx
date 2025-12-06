@@ -26,7 +26,7 @@ const Body = ({ posts }: PropTypes) => {
 
     return (
         <>
-            <div className="h-8 flex items-center justify-between mt-16 mb-6 pb-4 border-b dark:border-[#343539]">
+            <div className="h-8 flex items-center justify-between mt-16 mb-6 pb-4 border-b border-[#e5e7eb] dark:border-[#343539]">
                 <div className="flex space-x-4 font-bold">
                     <ul>
                         <Link href="/">

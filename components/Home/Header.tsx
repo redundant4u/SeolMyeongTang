@@ -43,7 +43,10 @@ const Header = () => {
         <header className="leading-normal">
             <div className="flex pt-12 pb-8">
                 <div>
-                    <canvas className="bg-white w-64 h-64 border-2 cursor-crosshair touch-none" ref={canvasRef} />
+                    <canvas
+                        className="bg-white w-64 h-64 border-2 border-[#e5e7eb] cursor-crosshair touch-none"
+                        ref={canvasRef}
+                    />
                 </div>
                 <div className="pl-2 flex flex-col justify-end">
                     <input className="color mb-2 w-6 h-6" ref={paletteRef} type="color" defaultValue="#000000" />
