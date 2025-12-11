@@ -5,11 +5,11 @@ type PropTypes = {
     loading: boolean;
     errorMessage: string | null;
     sessions: SessionType[];
-    onCreateSession: () => void;
+    onModalOpen: () => void;
     onDeleteSession: (data: DeleteSessionRequest) => void;
 };
 
-const SessionBody = ({ loading, errorMessage, sessions, onCreateSession, onDeleteSession }: PropTypes) => {
+const SessionBody = ({ loading, errorMessage, sessions, onModalOpen, onDeleteSession }: PropTypes) => {
     const router = useRouter();
 
     const onRedirectToVNC = (href: string) => {
@@ -33,7 +33,7 @@ const SessionBody = ({ loading, errorMessage, sessions, onCreateSession, onDelet
                 <button
                     type="button"
                     className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 active:scale-[0.97] transition"
-                    onClick={onCreateSession}
+                    onClick={onModalOpen}
                 >
                     <span
                         className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 border border-white/30

@@ -3,7 +3,7 @@
 import { createClientId, createSession, deleteSession, getSessions } from 'api/session';
 import Session from 'components/Session';
 import { useEffect, useState } from 'react';
-import { DeleteSessionRequest, SessionType } from 'types/session';
+import { CreateSessionRequest, DeleteSessionRequest, SessionType } from 'types/session';
 
 const SessionPage = () => {
     const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ const SessionPage = () => {
     const port = 32000;
     const redirect = `/vnc?autoconnect=ture&host=${host}&port=${port}&path=?token=`;
 
-    const onCreateSession = async () => {
+    const onCreateSession = async (data: CreateSessionRequest) => {
         try {
             let id = clientId;
 
@@ -25,7 +25,7 @@ const SessionPage = () => {
                 id = newClientId;
             }
 
-            const { name, sessionId } = await createSession(id, { name: 'test' });
+            const { name, sessionId } = await createSession(id, data);
             const newSession: SessionType = {
                 id: sessionId,
                 name,

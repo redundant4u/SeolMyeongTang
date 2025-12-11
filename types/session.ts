@@ -5,6 +5,7 @@ export type GetSessionsResponse = {
 
 export type CreateSessionRequest = {
     name: string;
+    image: string;
 };
 
 export type CreateSessionResponse = {
