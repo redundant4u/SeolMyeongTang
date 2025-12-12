@@ -26,7 +26,7 @@ const SessionBody = ({ loading, errorMessage, sessions, onModalOpen, onDeleteSes
         <div className="w-full px-4">
             <div className="flex items-center justify-between mb-6">
                 <div className="flex flex-col">
-                    <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Environments</h2>
+                    <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Sessions</h2>
                     <p className="text-xs text-slate-400 mt-1">Create a new workspace or join an existing session.</p>
                     {errorMessage && <p className="text-xs text-red-500 mt-2">{errorMessage}</p>}
                 </div>
@@ -41,7 +41,7 @@ const SessionBody = ({ loading, errorMessage, sessions, onModalOpen, onDeleteSes
                     >
                         +
                     </span>
-                    <span>Create Environment</span>
+                    <span>Create Session</span>
                 </button>
             </div>
 
@@ -57,7 +57,7 @@ const SessionBody = ({ loading, errorMessage, sessions, onModalOpen, onDeleteSes
                                     <span className="text-sm font-medium text-slate-700 group-hover:text-blue-600">
                                         {s.name}
                                     </span>
-                                    <span className="text-xs text-slate-400 mt-1">High performance workspace</span>
+                                    <span className="text-xs text-slate-400 mt-1">{s.description}</span>
                                 </div>
                                 <button
                                     type="button"
@@ -72,7 +72,7 @@ const SessionBody = ({ loading, errorMessage, sessions, onModalOpen, onDeleteSes
                             </div>
 
                             <div className="flex items-center justify-between text-xs text-slate-400">
-                                <span>VNC lite</span>
+                                <span>{s.image}</span>
                                 <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] uppercase tracking-wide">
                                     {loading ? 'Creating' : 'Running'}
                                 </span>

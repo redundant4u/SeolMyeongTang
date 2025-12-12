@@ -25,10 +25,12 @@ const SessionPage = () => {
                 id = newClientId;
             }
 
-            const { name, sessionId } = await createSession(id, data);
+            const { name, sessionId, image, description } = await createSession(id, data);
             const newSession: SessionType = {
                 id: sessionId,
                 name,
+                image,
+                description,
                 href: `${redirect}${id}:${sessionId}`,
             };
 
@@ -63,6 +65,8 @@ const SessionPage = () => {
                 const sessions: SessionType[] = res.map((s) => ({
                     id: s.sessionId,
                     name: s.name,
+                    image: s.image,
+                    description: s.description,
                     href: `${redirect}${clientId}:${s.sessionId}`,
                 }));
 
