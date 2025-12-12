@@ -5,12 +5,13 @@ module.exports = {
     compiler: {
         removeConsole: process.env.NODE_ENV === 'production' ? true : false,
     },
+    output: 'export',
     trailingSlash: false,
     reactStrictMode: true,
-    swcMinify: true,
     images: {
         unoptimized: true,
     },
+    compress: true,
     env: {
         TERMINAL_SOCKET_URL: process.env.TERMINAL_SOCKET_URL,
         CRDT_SOCKET_URL: process.env.CRDT_SOCKET_URL,
