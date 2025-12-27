@@ -10,7 +10,7 @@ const HTTP_METHOD = {
 } as const;
 
 const axiosInstance: AxiosInstance = axios.create({
-    timeout: process.env.NODE_ENV === 'production' ? 3000 : 30000,
+    timeout: process.env.NEXT_BUILD ? 30000 : 3000,
 });
 
 const handleResponse = <T>(response: AxiosResponse<T>) => {
