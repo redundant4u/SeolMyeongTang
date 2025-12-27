@@ -38,7 +38,7 @@ const createApiMethod =
         return _axiosInstance({
             ...{ url, ...config },
             method,
-            baseURL: config?.baseURL || process.env.NEXT_PUBLIC_API_ENDPOINT,
+            baseURL: config?.baseURL || process.env.NEXT_PUBLIC_DEFAULT_API_URL,
         }).then((res) => handleResponse(res));
     };
 

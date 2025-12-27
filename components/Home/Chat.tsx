@@ -7,7 +7,7 @@ import { io } from 'socket.io-client';
 import ChatSvg from 'public/icons/chat.svg';
 
 const socket = io(
-    process.env.NODE_ENV === 'production' ? `${process.env.CHAT_URL}` : 'https://sub.redundant4u.com/chat',
+    process.env.NODE_ENV === 'production' ? `${process.env.CHAT_API_URL}` : 'https://sub.redundant4u.com/chat',
     {
         transports: ['websocket'],
         path: '/ws/chat',

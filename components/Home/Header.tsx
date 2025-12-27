@@ -6,7 +6,9 @@ import TrashSVG from 'public/icons/trash.svg';
 
 const Header = () => {
     const socket = io(
-        process.env.NODE_ENV === 'production' ? `${process.env.CRDT_SOCKET_URL}` : 'http://localhost:3000/crdt',
+        process.env.NODE_ENV === 'production'
+            ? `${process.env.NEXT_PUBLIC_CRDT_SOCKET_URL}`
+            : 'http://localhost:3000/crdt',
         {
             transports: ['websocket'],
         }

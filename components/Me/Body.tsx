@@ -8,7 +8,9 @@ import '@xterm/xterm/css/xterm.css';
 
 const Body = () => {
     const socket = io(
-        process.env.NODE_ENV === 'production' ? `${process.env.TERMINAL_SOCKET_URL}` : 'http://localhost:3000/terminal',
+        process.env.NODE_ENV === 'production'
+            ? `${process.env.NEXT_PUBLIC_TERMINAL_SOCKET_URL}`
+            : 'http://localhost:3000/terminal',
         {
             transports: ['websocket'],
         }
