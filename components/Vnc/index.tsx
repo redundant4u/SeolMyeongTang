@@ -1,4 +1,4 @@
-import RFB from 'public/vnc/core/rfb.js';
+import RFB from './core/rfb.js';
 import { useEffect, useRef, useState } from 'react';
 
 const Vnc = () => {
@@ -9,7 +9,7 @@ const Vnc = () => {
         let rfb: RFB;
 
         const start = async () => {
-            const { default: RFB } = await import('public/vnc/core/rfb.js');
+            const { default: RFB } = await import('./core/rfb.js');
 
             const getParam = (name: string, def?: string) => {
                 const url = new URL(window.location.href);
