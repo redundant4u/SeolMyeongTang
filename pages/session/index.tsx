@@ -11,7 +11,7 @@ const SessionPage = () => {
     const [sessions, setSessions] = useState<SessionType[]>([]);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const host = process.env.NEXT_PUBLIC_DEFAULT_API_URL;
+    const host = process.env.NEXT_PUBLIC_VNC_API_URL;
     const port = 443;
     const redirect = `/vnc?autoconnect=ture&host=${host}&port=${port}&encrypt=1&path=?token=`;
 
