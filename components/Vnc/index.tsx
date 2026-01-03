@@ -1,3 +1,4 @@
+import router from 'next/router.js';
 import RFB from './core/rfb.js';
 import { useEffect, useRef, useState } from 'react';
 
@@ -41,6 +42,8 @@ const Vnc = () => {
 
             rfb.addEventListener('disconnect', () => {
                 setLoading(true);
+                alert('Connection is closed.');
+                router.replace('/session');
             });
         };
 
