@@ -3,6 +3,7 @@ export type GetSessionsResponse = {
     sessionId: string;
     image: string;
     description: string;
+    ttl: number;
 };
 
 export type CreateSessionRequest = {
@@ -16,6 +17,7 @@ export type CreateSessionResponse = {
     sessionId: string;
     image: string;
     description: string;
+    ttl: number;
 };
 
 export type DeleteSessionRequest = {
@@ -31,5 +33,6 @@ export type SessionType = {
     name: string;
     image: string;
     description: string;
+    ttl: number;
     href: string;
 };

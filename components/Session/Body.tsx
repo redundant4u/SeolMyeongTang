@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
 import { DeleteSessionRequest, SessionType } from 'types/session';
+import CountDownTTL from './CountDownTTL';
+import { useState } from 'react';
 
 type PropTypes = {
     loading: boolean;
@@ -10,6 +12,8 @@ type PropTypes = {
 };
 
 const SessionBody = ({ loading, errorMessage, sessions, onModalOpen, onDeleteSession }: PropTypes) => {
+    const [isExpired, setIsExpired] = useState(false);
+
     const router = useRouter();
 
     const onRedirectToVNC = (href: string) => {
@@ -54,10 +58,10 @@ const SessionBody = ({ loading, errorMessage, sessions, onModalOpen, onDeleteSes
                         >
                             <div className="flex items-center justify-between">
                                 <div className="flex flex-col">
-                                    <span className="text-sm font-medium text-slate-700 group-hover:text-blue-600">
+                                    <span className="text-base font-medium text-slate-700 group-hover:text-blue-600">
                                         {s.name}
                                     </span>
-                                    <span className="text-xs text-slate-400 mt-1">{s.description}</span>
+                                    <span className="text-base text-slate-400 mt-1">{s.description}</span>
                                 </div>
                                 <button
                                     type="button"
@@ -73,9 +77,13 @@ const SessionBody = ({ loading, errorMessage, sessions, onModalOpen, onDeleteSes
 
                             <div className="flex items-center justify-between text-xs text-slate-400">
                                 <span>{s.image}</span>
-                                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] uppercase tracking-wide">
-                                    {loading ? 'Creating' : 'Running'}
-                                </span>
+
+                                <div className="flex items-center gap-2">
+                                    <CountDownTTL ttl={s.ttl} onExpired={() => setIsExpired(true)} />
+                                    <span className={'rounded-full bg-slate-100 px-2 py-0.5 uppercase'}>
+                                        {isExpired ? 'Expired' : loading ? 'Creating' : 'Running'}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>

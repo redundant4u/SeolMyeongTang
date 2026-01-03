@@ -25,12 +25,13 @@ const SessionPage = () => {
                 id = newClientId;
             }
 
-            const { name, sessionId, image, description } = await createSession(id, data);
+            const { name, sessionId, image, description, ttl } = await createSession(id, data);
             const newSession: SessionType = {
                 id: sessionId,
                 name,
                 image,
                 description,
+                ttl,
                 href: `${redirect}${id}:${sessionId}`,
             };
 
@@ -67,6 +68,7 @@ const SessionPage = () => {
                     name: s.name,
                     image: s.image,
                     description: s.description,
+                    ttl: s.ttl,
                     href: `${redirect}${clientId}:${s.sessionId}`,
                 }));
 
