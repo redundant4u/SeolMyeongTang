@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 
 const Vnc = () => {
     const screenRef = useRef<HTMLDivElement>(null);
+    const disconnectedRef = useRef(false);
+    const isUserLeavingRef = useRef(false);
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -41,6 +44,15 @@ const Vnc = () => {
             });
 
             rfb.addEventListener('disconnect', () => {
+                if (disconnectedRef.current) {
+                    return;
+                }
+                disconnectedRef.current = true;
+
+                if (isUserLeavingRef.current) {
+                    return;
+                }
+
                 setLoading(true);
                 alert('Connection is closed.');
                 router.replace('/session');
@@ -53,6 +65,20 @@ const Vnc = () => {
             if (rfb) {
                 rfb.disconnect();
             }
+        };
+    }, []);
+
+    useEffect(() => {
+        const userLeaving = () => {
+            isUserLeavingRef.current = true;
+        };
+
+        router.events.on('routeChangeStart', userLeaving);
+        window.addEventListener('beforeunload', userLeaving);
+
+        return () => {
+            router.events.off('routeChangeStart', userLeaving);
+            window.removeEventListener('beforeunload', userLeaving);
         };
     }, []);
 
