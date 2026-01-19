@@ -1,10 +1,14 @@
 import CommonHeader from 'components/Common/Header';
+import ResponsibilityNotice from './ResponsibilityNotice';
 
 const SessionHeader = () => {
     return (
         <>
             <CommonHeader />
-            <h1 className="font-extrabold text-6xl pr-4 pl-4 pt-8 pb-8">Welcome to NETCOM!</h1>
+            <div className="px-4 pt-8 pb-6">
+                <h1 className="font-extrabold text-6xl mb-6">Welcome to NETCOM</h1>
+                <ResponsibilityNotice />
+            </div>
         </>
     );
 };
