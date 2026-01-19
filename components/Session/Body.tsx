@@ -51,36 +51,51 @@ const SessionBody = ({ loading, errorMessage, sessions, onModalOpen, onDeleteSes
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {sessions.map((s) => (
-                    <div key={s.id} onClick={() => onRedirectToVNC(s.href)} className="group cursor-pointer">
+                    <div key={s.id}>
                         <div
-                            className="h-40 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 flex flex-col justify-between shadow-sm transition
-                            hover:border-blue-500 hover:shadow-md hover:bg-blue-50"
+                            className="relative h-40 rounded-xl border border-slate-200 bg-white px-4 py-3
+                flex flex-col justify-between shadow-sm"
                         >
-                            <div className="flex items-center justify-between">
-                                <div className="flex flex-col">
-                                    <span className="text-base font-medium text-slate-700 group-hover:text-blue-600">
-                                        {s.name}
-                                    </span>
-                                    <span className="text-base text-slate-400 mt-1">{s.description}</span>
-                                </div>
+                            <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
                                 <button
                                     type="button"
                                     onClick={(e) => onDeleteSessionClick(e, s.id)}
-                                    className="flex h-10 w-10 items-center justify-center rounded-full border border-dashed
-                                    bg-slate-50 text-slate-400 text-2xl leading-none transition-colors
-                                    group-hover:border-blue-400 group-hover:text-blue-500 group-hover:bg-white
-                                    hover:!border-red-400 hover:!text-red-500 hover:!bg-red-50"
+                                    title="Delete session"
+                                    className="flex h-10 w-10 items-center justify-center rounded-full
+                        border border-dashed bg-slate-50 text-slate-400 text-2xl transition-colors
+                        hover:!border-red-400 hover:!text-red-500 hover:!bg-red-50"
                                 >
                                     -
                                 </button>
+                                <button
+                                    type="button"
+                                    onClick={() => onRedirectToVNC(s.href)}
+                                    title="Connect"
+                                    className="flex h-10 w-10 items-center justify-center rounded-full
+                        border bg-slate-50 text-slate-400 text-base transition-colors
+                        hover:border-blue-400 hover:text-blue-500 hover:bg-blue-50"
+                                >
+                                    →
+                                </button>
                             </div>
+                            <div className="pr-24">
+                                <span className="text-base font-medium text-slate-700">{s.name}</span>
 
+                                {s.description && (
+                                    <span className="mt-1 block text-base text-slate-400 line-clamp-2">
+                                        {s.description}
+                                    </span>
+                                )}
+                            </div>
                             <div className="flex items-center justify-between text-xs text-slate-400">
-                                <span>{s.image}</span>
+                                <div className="flex items-center gap-2 font-mono">
+                                    <span>ID: {s.id}</span>
+                                    <span>/ {s.image}</span>
+                                </div>
 
                                 <div className="flex items-center gap-2">
                                     <CountDownTTL ttl={s.ttl} onExpired={() => setIsExpired(true)} />
-                                    <span className={'rounded-full bg-slate-100 px-2 py-0.5 uppercase'}>
+                                    <span className="rounded-full bg-slate-100 px-2 py-0.5 uppercase">
                                         {isExpired ? 'Expired' : loading ? 'Creating' : 'Running'}
                                     </span>
                                 </div>
