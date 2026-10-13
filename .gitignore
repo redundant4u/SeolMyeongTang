@@ -28,3 +28,8 @@ next-env.d.ts
 articles
 
 .DS_Store
+
+coverage/
+*.tsbuildinfo
+playwright-report/
+test-results/
