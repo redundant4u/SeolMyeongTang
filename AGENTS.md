@@ -1,51 +1,65 @@
 # SeolMyeongTang AGENTS
 
+## Required Reading
+
+- When working inside the SMT spec workspace, read `../constitution.md` and
+  `../AGENTS.md` before applying these local rules. Resolve paths relative to this file.
+
 ## Scope
 
 - This repository is a `pages/`-based Next.js client.
-- Active code lives in `pages/`, `components/`, `api/`, `types/`, `utils/`, `public/`, and `styles/`.
-- Most interactivity is browser-only, so SSR safety matters on nearly every change.
 
-## App Context
+## Feature Structure
 
-- `/` is the post list and navigation entrypoint.
-- `/post/[id]` is a statically generated markdown post page.
-- `/me` is a browser-only terminal intro page backed by WebSocket.
-- `/session` is the VNC session management page.
-- `/vnc` is a noVNC-based remote viewer page.
-- `components/Home/Chat.tsx` exists but is currently not exposed in the live home UI.
+| Location | Responsibility |
+| --- | --- |
+| `pages/` | Routing, metadata, static data fetching, and dynamic imports |
+| `components/<Feature>/` | Feature UI, feature state, and local view helpers |
+| `components/Common/` | Shared layout UI |
+| `api/<feature>.ts` | Feature HTTP calls through the shared `api/index.ts` transport |
+| `types/<feature>.ts` | Shared request, response, and feature types |
+| `utils/` | Helpers reused across features |
+| `public/` | Static assets |
+| `styles/` | Shared styles |
 
-## Structure Rules
-
-- Keep page files focused on routing, metadata, static data fetching, and dynamic imports.
-- Put screen UI in `components/<Feature>/` rather than growing logic directly in `pages/`.
-- Keep shared layout UI in `components/Common`.
-- Add or update HTTP clients in `api/*.ts`; do not call axios directly from UI components.
-- Update `types/` first when a server response shape changes.
+- Reuse layout UI from `components/Common` and existing feature components before
+  adding repeated markup or page-specific overrides.
 - Treat `components/Vnc/core` and `components/Vnc/vendor` as vendored code; do not edit them unless the task explicitly targets the VNC implementation.
 
-## Current Behavior Constraints
+## Naming And Dependencies
 
-- Posts are fetched at build time through `getStaticProps` and `getStaticPaths`.
-- Post rendering depends on `react-markdown`, `remark-gfm`, and `rehype-raw`.
-- Code blocks and images are customized through `components/Code` and `components/ImageZoom`.
-- `/me`, `/session`, and `/vnc` rely on browser APIs such as sockets, local storage, screen size, or `window`.
-- The session flow depends on `localStorage.clientId`; create the client id before assuming session APIs will work.
-- `/vnc` must stay client-only and currently redirects back to `/session` on disconnect.
-- `next.config.js` assumes static export output and SVG loading through SVGR.
+- Use PascalCase for component files and type names; keep `index.tsx` for existing
+  feature entry points. Match feature names across `api/` and `types/`.
+- Name request and response types by operation, entity, and role, such as
+  `CreateSessionRequest` and `CreateSessionResponse`.
+- Preserve wire field names and casing; naming cleanup must not change JSON contracts.
+- Update `types/` first when request or response shapes change; pages and components
+  must consume those types instead of redefining API shapes locally.
+- Give shared API helpers explicit input and return types. Use `unknown` for
+  untrusted data until validated; do not hide contract mismatches with `any`
+  or unchecked type assertions.
+- UI code must call `api/` clients rather than axios directly. Keep transport setup
+  in `api/index.ts`, not in feature components.
+- Shared types and utilities must not import pages or feature UI components.
 
-## Environment and Integration Assumptions
+## Resource Lifecycle
 
-- Default local dev runs on port `3001`.
-- `NEXT_PUBLIC_DEFAULT_API_URL` is the general API base URL.
-- `NEXT_PUBLIC_POST_API_URL` is used for post reads.
-- `NEXT_PUBLIC_VNC_API_URL` is used to build VNC session links.
-- `NEXT_PUBLIC_TERMINAL_SOCKET_URL` is used in production; development falls back to `http://localhost:3000/terminal`.
-- The axios wrapper attaches `localStorage.accessToken` to the `Authorization` header on each request.
+- Initialize sockets, terminal widgets, timers, and listeners in effects or event
+  handlers, not during rendering.
+- Pair setup with cleanup: remove listeners, cancel timers, and disconnect or
+  dispose owned resources when their owner changes or unmounts.
+- Register interceptors once per HTTP client instance, not once per request.
+  Read the current authentication state inside the interceptor.
 
 ## Working Rules
 
 - Preserve public route behavior unless the task or spec explicitly changes it.
-- Do not read browser-only globals from code that can run during server rendering.
+- Keep browser-only widgets client-only; do not read browser-only globals from
+  code that can run during server rendering.
+- Preserve static-export and SVG-import compatibility when changing page data
+  fetching or build configuration.
 - Keep business rules in server/spec layers, not hidden inside client-only branches.
-- If client-visible behavior or API assumptions change, update the relevant specs first.
+- Core client logic includes input validation, request/response mapping, persisted
+  identity/state, and browser-only resource initialization.
+- Core user flows include reading or changing external resources and establishing,
+  recovering, or closing external connections.
